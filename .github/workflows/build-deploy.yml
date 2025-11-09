@@ -24,33 +24,34 @@ jobs:
       - name: Install
         run: npm ci
 
-      # ⬇️ Ajusta el base-href (ver punto 1)
-      - name: Build
-        run: |
-          npm run build
-          #  npx ng build --configuration production --base-href /
+      - name: Compute base-href
+        run: echo "BASE_HREF=/${GITHUB_REPOSITORY#*/}/" >> $GITHUB_ENV
 
-      # ⚠️ Carpeta de salida según tu versión de Angular/CLI
+      - name: Build
+        run: npx ng build --configuration production --base-href "${BASE_HREF}"
+
+  # Detecta automáticamente la carpeta dist (Angular 17+/18 -> dist/<name>/browser)
       - name: Detect dist folder
         id: dist
+        shell: bash
         run: |
-          echo "path=dist/ui" >> $GITHUB_OUTPUT
+          set -e
+          DIST="$(ls -d dist/**/browser 2>/dev/null | head -n 1 || true)"
+          if [ -z "$DIST" ]; then
+            DIST="$(ls -d dist/* 2>/dev/null | head -n 1 || true)"
+          fi
+          if [ -z "$DIST" ]; then
+            echo "No se encontró carpeta dist tras el build"; exit 1
+          fi
+          echo "path=$DIST" >> "$GITHUB_OUTPUT"
+          echo "Dist folder: $DIST"
 
-      # SPA fallback (opcional pero recomendado para routing)
+      # SPA fallback para GitHub Pages
       - name: Add SPA fallback
-        run: |
-          cp ${{
-            steps.dist.outputs.path
-          }}/index.html ${{
-            steps.dist.outputs.path
-          }}/404.html
+        run: cp "${{ steps.dist.outputs.path }}/index.html" "${{ steps.dist.outputs.path }}/404.html"
 
-      # Evita Jekyll
       - name: Add .nojekyll
-        run: |
-          touch ${{
-            steps.dist.outputs.path
-          }}/.nojekyll
+        run: touch "${{ steps.dist.outputs.path }}/.nojekyll"
 
       - name: Deploy to gh-pages
         uses: JamesIves/github-pages-deploy-action@v4
