@@ -1,0 +1,23 @@
+:host, html, body {
+  height: 100%;
+}
+
+.layout {
+  height: 100vh;                 /* ocupa toda la ventana */
+  background: var(--mat-sys-surface-container, #fafafa);
+}
+
+.side {
+  width: 320px;                  /* ancho del nav */
+  border-right: 1px solid rgba(0,0,0,.08);
+  background: var(--mat-sys-surface, #fff);
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.content {
+  height: 100%;
+  padding: 16px;                 /* margen interior del área de contenido */
+  box-sizing: border-box;
+  overflow: auto;                /* scroll del contenido */
+}
