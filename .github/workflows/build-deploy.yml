@@ -28,13 +28,13 @@ jobs:
       - name: Build
         run: |
           npm run build
-          #  npx ng build --configuration production --base-href /netconfighub-ui/
+          #  npx ng build --configuration production --base-href /
 
       # ⚠️ Carpeta de salida según tu versión de Angular/CLI
       - name: Detect dist folder
         id: dist
         run: |
-          echo "path=dist/browser" >> $GITHUB_OUTPUT
+          echo "path=dist/ui" >> $GITHUB_OUTPUT
 
       # SPA fallback (opcional pero recomendado para routing)
       - name: Add SPA fallback
