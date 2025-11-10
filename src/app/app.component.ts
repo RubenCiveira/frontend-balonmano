@@ -1,30 +1,29 @@
-import { Component, OnDestroy, OnInit, signal, viewChild } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
-import {
-  BreakpointObserver,
-  Breakpoints,
-  LayoutModule,
-} from '@angular/cdk/layout';
+import { ApplicationRef, Component, OnDestroy, OnInit, signal, viewChild } from '@angular/core';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { BreakpointObserver } from '@angular/cdk/layout';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { NavBarTreeComponent } from './feature/liga/components/nav-bar-tree/nav-bar-tree.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { Subscription } from 'rxjs';
+import { filter, Subscription } from 'rxjs';
 import { SmallDeviceBreakPoints } from './feature/liga/service/break-point.service';
+import { TourMatMenuModule, TourService } from 'ngx-ui-tour-md-menu';
+import { onboard } from './app.onboarding';
 
 @Component({
-    selector: 'app-root',
-    imports: [
-        MatSidenavModule,
-        RouterOutlet,
-        NavBarTreeComponent,
-        MatToolbarModule,
-        MatButtonModule,
-        MatIconModule,
-    ],
-    templateUrl: './app.component.html',
-    styleUrl: './app.component.scss'
+  selector: 'app-root',
+  imports: [
+    TourMatMenuModule,
+    MatSidenavModule,
+    RouterOutlet,
+    NavBarTreeComponent,
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+  ],
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit, OnDestroy {
   title = 'ui';
@@ -35,24 +34,50 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly router: Router,
+    private readonly appRef: ApplicationRef,
+    private readonly tourService: TourService,
     private readonly breakpoint: BreakpointObserver
-  ) {}
+  ) {
+    this.router.events.pipe(filter(e => e instanceof NavigationEnd))
+      .subscribe(() => this.tourService.end());
+  }
 
   ngOnInit(): void {
     this.subscription.add(
-      this.breakpoint.observe(Object.values(SmallDeviceBreakPoints)).subscribe((res) => {
-        this.isHandset.set(res.matches);
-        if (!res.matches) {
-          this.sidenav()?.open();
-        } else {
-          this.sidenav()?.close();
-        }
-      })
+      this.breakpoint
+        .observe(Object.values(SmallDeviceBreakPoints))
+        .subscribe((res) => {
+          this.isHandset.set(res.matches);
+          if (!res.matches) {
+            this.sidenav()?.open();
+          } else {
+            this.sidenav()?.close();
+          }
+        })
     );
+    if( !localStorage.getItem("tour-executed") ) {
+      localStorage.setItem("tour-executed", "true");
+      this.help();
+    }
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+  }
+
+  help() {
+    const url = this.router.url.split('?')[0];
+    const steps = onboard()[url] ?? [];
+    this.tourService.end();
+    this.tourService.initialize(steps, {
+      enableBackdrop: true,
+      backdropConfig: {
+        offset: 10,
+      },
+    });
+    this.appRef.whenStable().then(() => {
+      this.tourService.start();
+    });
   }
 
   goHome(): void {

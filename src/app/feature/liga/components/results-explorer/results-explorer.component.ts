@@ -17,8 +17,7 @@ import {
 } from '../../service/liga-api.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SelectionStore } from '../../service/selection-store.service';
-
-type ViewMode = 'partidos' | 'clasificacion';
+import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
 
 @Component({
     selector: 'app-results-explorer',
@@ -26,6 +25,7 @@ type ViewMode = 'partidos' | 'clasificacion';
         CommonModule,
         FormsModule,
         MatInputModule,
+        TourMatMenuModule,
         MatFormFieldModule,
         ReactiveFormsModule,
         MatAutocompleteModule,

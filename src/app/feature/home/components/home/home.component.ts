@@ -3,7 +3,6 @@ import {
   SelectionStore,
   ViewMode,
 } from '../../../liga/service/selection-store.service';
-import { Route, Router } from '@angular/router';
 import {
   Categoria,
   Competicion,
@@ -12,10 +11,10 @@ import {
   Territorial,
 } from '../../../liga/service/liga-api.service';
 import { MatButtonModule } from '@angular/material/button';
+import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
 
-// territorial=20&temporada=2526&categoria=2605&competicion=209564&fase=1033718
 @Component({
-    imports: [MatButtonModule],
+    imports: [MatButtonModule, TourMatMenuModule],
     template: `
     <p></p>
     <p>Carballiño</p>
@@ -26,7 +25,7 @@ import { MatButtonModule } from '@angular/material/button';
           mat-raised-button
           (click)="
             goTo('partidos', '20', '2526', '2605', '209564', '1033718')
-          "
+          "  [tourAnchor]="'go-to-clasificacion'"
         >
           Partidos
         </button>
@@ -34,7 +33,7 @@ import { MatButtonModule } from '@angular/material/button';
           mat-raised-button
           (click)="
             goTo('clasificacion', '20', '2526', '2605', '209564', '1033718')
-          "
+          "  [tourAnchor]="'go-to-partidos'"
         >
           Clasificación
         </button>

@@ -39,8 +39,8 @@
         @for(p of partidos(); track p.code) {
         <article class="match-card mat-elevation-z1">
           <header class="match-head">
-            <span class="date">{{ date(p) }}</span>
-            <span class="status" [class.played]="p.estado === 'FINAL'">{{
+            <span class="date" [tourAnchor]="$index === 0 ? 'fecha-partido' : ''">{{ date(p) }}</span>
+            <span class="status" [tourAnchor]="$index === 0 ? 'estado-partido' : ''" [class.played]="p.estado === 'FINAL'">{{
               p.estado
             }}</span>
           </header>
@@ -58,7 +58,7 @@
           </div>
 
           <div class="footer">
-            <div class="place">
+            <div class="place" [tourAnchor]="$index === 0 ? 'lugar-partido' : ''">
               <mat-icon>location_on</mat-icon>
               <span>{{ p.lugar?.label ?? "PDTE." }}</span>
             </div>
@@ -68,6 +68,7 @@
               [class.pending]="
                 p.puntosLocal == null || p.puntosVisitante == null
               "
+              [tourAnchor]="$index === 0 ? 'resultado-partido' : ''"
             >
               @if (p.puntosLocal != null && p.puntosVisitante != null) {
               <span class="pill"
@@ -109,18 +110,25 @@
             </div>
 
             <div class="line2 muted">
-              <span class="chips-title"> <b> Partidos </b>
-              {{ c.ganados + c.empatados + c.perdidos }}
+              <span class="chips-title">
+                <b> Partidos </b>
+                {{ c.ganados + c.empatados + c.perdidos }}
               </span>
               <div class="chip-group">
                 <div class="chip">
-                  <mat-icon class="icon sm win" aria-label="Partidos ganados"
+                  <mat-icon
+                    class="icon sm win"
+                    aria-label="Partidos ganados"
+                    [tourAnchor]="$index === 0 ? 'partidos-ganados' : ''"
                     >emoji_events</mat-icon
                   >
                   {{ c.ganados }}
                 </div>
                 <div class="chip">
-                  <mat-icon class="icon sm draw" aria-label="Partidos empatados"
+                  <mat-icon
+                    class="icon sm draw"
+                    aria-label="Partidos empatados"
+                    [tourAnchor]="$index === 0 ? 'partidos-empatados' : ''"
                     >balance</mat-icon
                   >
                   {{ c.empatados }}
@@ -130,6 +138,7 @@
                     class="icon sm loss"
                     fontSet="material-symbols-outlined"
                     aria-label="Partidos perdidos"
+                    [tourAnchor]="$index == 0 ? 'partidos-perdidos' : ''"
                     >sentiment_sad</mat-icon
                   >
                   {{ c.perdidos }}
@@ -138,19 +147,20 @@
               <span class="chips-title">
                 <b>Goles</b>
                 <span
-                [class.positive]="c.golesMarcados - c.golesRecividos >= 0"
-                [class.negative]="c.golesMarcados - c.golesRecividos < 0"
+                  [class.positive]="c.golesMarcados - c.golesRecividos >= 0"
+                  [class.negative]="c.golesMarcados - c.golesRecividos < 0"
                 >
-                {{ c.golesMarcados - c.golesRecividos >= 0 ? "+" : "" }}
-                {{ c.golesMarcados - c.golesRecividos }}
+                  {{ c.golesMarcados - c.golesRecividos >= 0 ? "+" : "" }}
+                  {{ c.golesMarcados - c.golesRecividos }}
+                </span>
               </span>
-            </span>
               <div class="chip-group">
                 <div class="chip">
                   <mat-icon
                     class="icon sm win"
                     fontSet="material-symbols-outlined"
                     aria-label="Partidos perdidos"
+                    [tourAnchor]="$index === 0 ? 'goles-marcados' : ''"
                     >sports_handball</mat-icon
                   >
                   + {{ c.golesMarcados }}
@@ -160,6 +170,7 @@
                     class="icon sm loss"
                     fontSet="material-symbols-outlined"
                     aria-label="Partidos perdidos"
+                    [tourAnchor]="$index === 0 ? 'goles-recividos' : ''"
                     >login</mat-icon
                   >
                   - {{ c.golesRecividos }}

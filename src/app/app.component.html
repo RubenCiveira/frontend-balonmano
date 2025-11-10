@@ -14,8 +14,11 @@
     <span class="spacer"></span>
 
     <!-- acciones de la derecha -->
-    <button mat-icon-button aria-label="Refrescar" (click)="goHome()">
+    <button mat-icon-button aria-label="Favoritos" (click)="goHome()">
       <mat-icon>home</mat-icon>
+    </button>
+    <button mat-icon-button aria-label="Help" (click)="help()">
+      <mat-icon>help</mat-icon>
     </button>
   </mat-toolbar>
   <mat-sidenav-container class="container">
@@ -35,3 +38,4 @@
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>
+<tour-step-template></tour-step-template>
