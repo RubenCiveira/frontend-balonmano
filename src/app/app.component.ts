@@ -48,6 +48,9 @@ export class AppComponent implements OnInit, OnDestroy {
     this.router.events
       .pipe(filter((e) => e instanceof NavigationEnd))
       .subscribe((e) => {
+        if( this.isHandset() ) {
+          this.sidenav()?.close();
+        }
         this.tourService.end();
         const key = 'tour-executed-' + e.url.split('?')[0];
         if (!localStorage.getItem(key)) {
