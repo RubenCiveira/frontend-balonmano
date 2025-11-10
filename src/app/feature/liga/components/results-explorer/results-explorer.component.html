@@ -1,0 +1,173 @@
+<mat-card style="margin-top: 12px">
+  <mat-card-header>
+    <mat-card-title>
+      {{ store.competicion() ? store.competicion()?.label + " - " : "" }}
+      {{ store.territorial()?.label }}</mat-card-title
+    >
+    <mat-card-subtitle>
+      {{ store.fase()?.label }}
+      {{
+        store.temporada() ? "(" + store.temporada()?.label + ")" : ""
+      }}</mat-card-subtitle
+    >
+  </mat-card-header>
+  <mat-card-content>
+    <div class="report">
+      @if (loading()) {
+      <div class="loading">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      </div>
+      <div class="skeleton-list" aria-hidden="true">
+        @for (_ of [1,2,3,4,5,6,7,8,9,10,11,12]; track _) {
+        <div class="skeleton-item">
+          <div class="sk-logo shimmer"></div>
+          <div class="sk-lines">
+            <div class="sk-line shimmer"></div>
+            <div class="sk-line short shimmer"></div>
+          </div>
+          <div class="sk-score shimmer"></div>
+        </div>
+        }
+      </div>
+      } @else if (store.viewMode() === 'partidos' && partidos().length === 0) {
+      <div class="empty">
+        <mat-icon>event_busy</mat-icon>
+        <p>No hay partidos para esta jornada.</p>
+      </div>
+      } @else if (store.viewMode() === 'partidos') {
+      <div>
+        @for(p of partidos(); track p.code) {
+        <article class="match-card mat-elevation-z1">
+          <header class="match-head">
+            <span class="date">{{ date(p) }}</span>
+            <span class="status" [class.played]="p.estado === 'FINAL'">{{
+              p.estado
+            }}</span>
+          </header>
+
+          <div class="teams">
+            <div class="team local">
+              <span class="name">{{ p.local.label }}</span>
+              <img [src]="p.local.logo" alt="" class="logo" />
+            </div>
+            <div class="versus">vs</div>
+            <div class="team visitante">
+              <img [src]="p.visitante.logo" alt="" class="logo" />
+              <span class="name">{{ p.visitante.label }}</span>
+            </div>
+          </div>
+
+          <div class="footer">
+            <div class="place">
+              <mat-icon>location_on</mat-icon>
+              <span>{{ p.lugar?.label ?? "PDTE." }}</span>
+            </div>
+
+            <div
+              class="score"
+              [class.pending]="
+                p.puntosLocal == null || p.puntosVisitante == null
+              "
+            >
+              @if (p.puntosLocal != null && p.puntosVisitante != null) {
+              <span class="pill"
+                >{{ p.puntosLocal }} - {{ p.puntosVisitante }}</span
+              >
+              } @else {
+              <span class="pill ghost">Pendiente</span>
+              }
+            </div>
+          </div>
+        </article>
+        }
+      </div>
+      } @else if(clasificaciones().length === 0) {
+      <div class="empty">
+        <mat-icon>list_alt</mat-icon>
+        <p>No hay clasificación disponible.</p>
+      </div>
+      } @else {
+      <div class="standings-list">
+        @for (c of clasificaciones(); track c.code) {
+        <article class="row" aria-label="equipo en clasificación">
+          <div class="pos" aria-hidden="true">{{ c.posicion }}</div>
+
+          <img
+            class="logo"
+            [src]="c.equipo.logo"
+            alt=""
+            loading="lazy"
+            decoding="async"
+          />
+
+          <div class="main">
+            <div class="line1">
+              <span class="team">{{ c.equipo.label }}</span>
+              <span class="points">
+                {{ c.puntos }} <span class="pts-suffix">pts</span>
+              </span>
+            </div>
+
+            <div class="line2 muted">
+              <b style="margin-left: 35px"> Partidos </b>
+              {{ c.ganados + c.empatados + c.perdidos }}
+              <div class="chip-group">
+                <div class="chip">
+                  <mat-icon class="icon sm win" aria-label="Partidos ganados"
+                    >emoji_events</mat-icon
+                  >
+                  {{ c.ganados }}
+                </div>
+                <div class="chip">
+                  <mat-icon class="icon sm draw" aria-label="Partidos empatados"
+                    >balance</mat-icon
+                  >
+                  {{ c.empatados }}
+                </div>
+                <div class="chip">
+                  <mat-icon
+                    class="icon sm loss"
+                    fontSet="material-symbols-outlined"
+                    aria-label="Partidos perdidos"
+                    >sentiment_sad</mat-icon
+                  >
+                  {{ c.perdidos }}
+                </div>
+              </div>
+              <b style="margin-left: 35px">Goles</b>
+              <span
+                [class.positive]="c.golesMarcados - c.golesRecividos >= 0"
+                [class.negative]="c.golesMarcados - c.golesRecividos < 0"
+              >
+                {{ c.golesMarcados - c.golesRecividos >= 0 ? "+" : "" }}
+                {{ c.golesMarcados - c.golesRecividos }}
+              </span>
+              <div class="chip-group">
+                <div class="chip">
+                  <mat-icon
+                    class="icon sm win"
+                    fontSet="material-symbols-outlined"
+                    aria-label="Partidos perdidos"
+                    >sports_handball</mat-icon
+                  >
+                  + {{ c.golesMarcados }}
+                </div>
+                <div class="chip">
+                  <mat-icon
+                    class="icon sm loss"
+                    fontSet="material-symbols-outlined"
+                    aria-label="Partidos perdidos"
+                    >login</mat-icon
+                  >
+                  - {{ c.golesRecividos }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+        }
+      </div>
+      }
+    </div>
+  </mat-card-content>
+</mat-card>

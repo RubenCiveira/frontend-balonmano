@@ -14,6 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { Territorial } from '../../service/liga-api.service';
 import { SelectionStore } from '../../service/selection-store.service';
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-nav-bar-tree',
@@ -32,7 +33,8 @@ import { SelectionStore } from '../../service/selection-store.service';
     MatMenuModule,
     MatIconModule,
     MatProgressSpinnerModule,
-  ],
+    RouterLink
+],
   styles: [
     `
       :host {
@@ -43,6 +45,7 @@ import { SelectionStore } from '../../service/selection-store.service';
     `,
   ],
   template: `
+    <a [routerLink]="'/'">home</a>
     <mat-form-field appearance="fill">
       <mat-label>Territorial</mat-label>
       <input
@@ -115,6 +118,19 @@ import { SelectionStore } from '../../service/selection-store.service';
         }
       </mat-select>
     </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Jornada</mat-label>
+        <mat-select
+          [disabled]="!store.fase() || store.jornadas().length === 0"
+          [value]="store.jornada()"
+          [compareWith]="compareByCode"
+          (selectionChange)="store.setJornada($event.value)"
+        >
+          @for (s of store.jornadas(); track s.code) {
+          <mat-option [value]="s">{{ s.label }} {{ s.code === store.jornadaActual()?.code ? '(Actual)' : '' }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
   `,
 })
 export class NavBarTreeComponent implements OnInit, OnDestroy {

@@ -14,6 +14,27 @@ html, body {
   height: 100svh; 
 }
 
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px; /* controla tamaño */
+  line-height: 1;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+
+  /* ejes de variación por defecto */
+  font-variation-settings:
+    'FILL' 0,   /* 0 contorno, 1 relleno */
+    'wght' 400, /* grosor 100..700 */
+    'GRAD' 0,   /* gradiente -50..200 */
+    'opsz' 24;  /* optical size 20..48 */
+}
+
 @supports (height: 100dvh) {
   body { height: 100dvh; }    /* preferible: sigue la barra al ocultarse/mostrarse */
 }

@@ -1,10 +1,50 @@
-<mat-sidenav-container class="layout">
-  <mat-sidenav class="side" mode="side" opened>
-    <!-- Tu árbol perezoso -->
-    <app-nav-bar-tree/>
-  </mat-sidenav>
+<div class="layout">
+  <mat-toolbar color="primary" class="toolbar">
+    <button
+      mat-icon-button
+      aria-label="Abrir menú"
+      (click)="toggleSidenav()"
+      class="menu-btn"
+    >
+      <mat-icon>menu</mat-icon>
+    </button>
 
-  <mat-sidenav-content class="content">
-    <router-outlet/>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+    <span class="title">Liga Balonmano</span>
+
+    <span class="spacer"></span>
+
+    <!-- acciones de la derecha -->
+    <button mat-icon-button aria-label="Refrescar" (click)="goHome()">
+      <mat-icon>home</mat-icon>
+    </button>
+
+    <mat-button-toggle-group
+      [value]="store.viewMode()"
+      (change)="store.setViewMode($event.value)"
+    >
+      <mat-button-toggle value="partidos"
+        ><mat-icon>sports_handball</mat-icon> Partidos</mat-button-toggle
+      >
+      <mat-button-toggle value="clasificacion"
+        ><mat-icon>format_list_numbered</mat-icon>
+        Clasificación</mat-button-toggle
+      >
+    </mat-button-toggle-group>
+  </mat-toolbar>
+  <mat-sidenav-container class="container">
+    <mat-sidenav
+      #sidenav
+      class="side"
+      [mode]="isHandset() ? 'over' : 'side'"
+      [opened]="!isHandset()"
+    >
+      <app-nav-bar-tree />
+    </mat-sidenav>
+
+    <mat-sidenav-content class="content">
+      <main class="page">
+        <router-outlet />
+      </main>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

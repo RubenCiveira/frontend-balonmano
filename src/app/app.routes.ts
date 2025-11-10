@@ -1,16 +1,9 @@
 import { Routes } from '@angular/router';
 import { ResultsExplorerComponent } from './feature/liga/components/results-explorer/results-explorer.component';
+import { HomeComponent } from './feature/home/components/home/home.component';
 
 export const routes: Routes = [
-  { path: '', component: ResultsExplorerComponent },
+  { path: '', component: HomeComponent },
   { path: 'partidos', component: ResultsExplorerComponent },
   { path: 'clasificacion', component: ResultsExplorerComponent },
-//   { path: 't/:territorial', component: ResultsExplorerComponent },
-//   { path: 't/:territorial/s/:temporada', component: ResultsExplorerComponent },
-//   { path: 't/:territorial/s/:temporada/cat/:categoria', component: ResultsExplorerComponent },
-//   { path: 't/:territorial/s/:temporada/cat/:categoria/comp/:competicion', component: ResultsExplorerComponent },
-//   { path: 't/:territorial/s/:temporada/cat/:categoria/comp/:competicion/f/:fase', component: ResultsExplorerComponent },
-//   { path: 't/:territorial/s/:temporada/cat/:categoria/comp/:competicion/f/:fase/j/:jornada', component: ResultsExplorerComponent },
-//   { path: 't/:territorial/s/:temporada/cat/:categoria/comp/:competicion/f/:fase/v/:view', component: ResultsExplorerComponent },
-//   { path: 't/:territorial/s/:temporada/cat/:categoria/comp/:competicion/f/:fase/j/:jornada/v/:view', component: ResultsExplorerComponent },
 ];

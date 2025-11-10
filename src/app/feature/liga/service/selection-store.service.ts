@@ -18,7 +18,7 @@ import {
 } from '../service/liga-api.service';
 import { firstValueFrom } from 'rxjs';
 
-type ViewMode = 'partidos' | 'clasificacion';
+export type ViewMode = 'partidos' | 'clasificacion';
 
 @Injectable({ providedIn: 'root' })
 export class SelectionStore {
@@ -47,9 +47,9 @@ export class SelectionStore {
   private routePath: Signal<any>;
 
   constructor(
-    private api: LigaApi,
-    private router: Router,
-    private route: ActivatedRoute
+    private readonly api: LigaApi,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute
   ) {
     this.routeParams = toSignal(
       this.router.events.pipe(

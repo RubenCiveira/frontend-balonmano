@@ -5,6 +5,12 @@
 .layout {
   height: 100vh;                 /* ocupa toda la ventana */
   background: var(--mat-sys-surface-container, #fafafa);
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+    flex: 1;
 }
 
 .side {
@@ -20,4 +26,11 @@
   padding: 16px;                 /* margen interior del área de contenido */
   box-sizing: border-box;
   overflow: auto;                /* scroll del contenido */
+}
+
+.toolbar {
+    display: flex;
+}
+.spacer {
+    flex: 1;
 }
