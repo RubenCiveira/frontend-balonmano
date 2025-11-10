@@ -17,19 +17,6 @@
     <button mat-icon-button aria-label="Refrescar" (click)="goHome()">
       <mat-icon>home</mat-icon>
     </button>
-
-    <mat-button-toggle-group
-      [value]="store.viewMode()"
-      (change)="store.setViewMode($event.value)"
-    >
-      <mat-button-toggle value="partidos"
-        ><mat-icon>sports_handball</mat-icon> Partidos</mat-button-toggle
-      >
-      <mat-button-toggle value="clasificacion"
-        ><mat-icon>format_list_numbered</mat-icon>
-        Clasificación</mat-button-toggle
-      >
-    </mat-button-toggle-group>
   </mat-toolbar>
   <mat-sidenav-container class="container">
     <mat-sidenav

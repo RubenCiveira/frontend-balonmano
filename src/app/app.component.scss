@@ -3,7 +3,7 @@
 }
 
 .layout {
-  height: 100vh;                 /* ocupa toda la ventana */
+  min-height: 100svh; height: 100dvh;              /* ocupa toda la ventana */
   background: var(--mat-sys-surface-container, #fafafa);
   display: flex;
   flex-direction: column;

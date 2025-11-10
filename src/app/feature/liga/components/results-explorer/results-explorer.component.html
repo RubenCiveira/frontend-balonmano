@@ -109,8 +109,9 @@
             </div>
 
             <div class="line2 muted">
-              <b style="margin-left: 35px"> Partidos </b>
+              <span class="chips-title"> <b> Partidos </b>
               {{ c.ganados + c.empatados + c.perdidos }}
+              </span>
               <div class="chip-group">
                 <div class="chip">
                   <mat-icon class="icon sm win" aria-label="Partidos ganados"
@@ -134,14 +135,16 @@
                   {{ c.perdidos }}
                 </div>
               </div>
-              <b style="margin-left: 35px">Goles</b>
-              <span
+              <span class="chips-title">
+                <b>Goles</b>
+                <span
                 [class.positive]="c.golesMarcados - c.golesRecividos >= 0"
                 [class.negative]="c.golesMarcados - c.golesRecividos < 0"
-              >
+                >
                 {{ c.golesMarcados - c.golesRecividos >= 0 ? "+" : "" }}
                 {{ c.golesMarcados - c.golesRecividos }}
               </span>
+            </span>
               <div class="chip-group">
                 <div class="chip">
                   <mat-icon

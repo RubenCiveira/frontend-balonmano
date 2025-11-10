@@ -26,7 +26,7 @@ import { MatButtonModule } from '@angular/material/button';
         <button
           mat-raised-button
           (click)="
-            goToFase('partidos', '20', '2526', '2605', '209564', '1033718')
+            goTo('partidos', '20', '2526', '2605', '209564', '1033718')
           "
         >
           Partidos
@@ -34,7 +34,7 @@ import { MatButtonModule } from '@angular/material/button';
         <button
           mat-raised-button
           (click)="
-            goToFase('clasificacion', '20', '2526', '2605', '209564', '1033718')
+            goTo('clasificacion', '20', '2526', '2605', '209564', '1033718')
           "
         >
           Clasificación
@@ -46,8 +46,20 @@ import { MatButtonModule } from '@angular/material/button';
 export class HomeComponent {
   public constructor(private readonly store: SelectionStore) {}
 
-  goToFase(
+  goTo(
     mode: ViewMode,
+    territorial: string,
+    temporada: string,
+    categoria: string,
+    competicion: string,
+    fase: string
+  ) {
+    this.store.setViewMode(mode);
+    setTimeout(() => {
+        this.goToFase(territorial, temporada, categoria, competicion, fase);
+    });
+  }
+  goToFase(
     territorial: string,
     temporada: string,
     categoria: string,
@@ -79,6 +91,5 @@ export class HomeComponent {
       competicion: cpt,
     } as Fase;
     this.store.setFase(fs);
-    this.store.setViewMode(mode);
   }
 }
