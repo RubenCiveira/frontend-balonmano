@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1762784716171,
+  "timestamp": 1762785070516,
   "index": "/frontend-balonmano/index.html",
   "assetGroups": [
     {
@@ -11,14 +11,14 @@
         "ignoreVary": true
       },
       "urls": [
-        "/frontend-balonmano/chunk-774MV2XC.js",
-        "/frontend-balonmano/chunk-SWTJFYSS.js",
+        "/frontend-balonmano/chunk-QM4VBTXC.js",
+        "/frontend-balonmano/chunk-VFEHQYHF.js",
         "/frontend-balonmano/favicon.ico",
         "/frontend-balonmano/index.html",
-        "/frontend-balonmano/main-CR3YTYU5.js",
+        "/frontend-balonmano/main-RI7XC5JK.js",
         "/frontend-balonmano/manifest.webmanifest",
-        "/frontend-balonmano/polyfills-FFHMD2TL.js",
-        "/frontend-balonmano/styles-EVRKIN67.css"
+        "/frontend-balonmano/polyfills-5CFQRCPP.js",
+        "/frontend-balonmano/styles-SOZDS7XW.css"
       ],
       "patterns": []
     },
@@ -44,8 +44,8 @@
   ],
   "dataGroups": [],
   "hashTable": {
-    "/frontend-balonmano/chunk-774MV2XC.js": "57de7105e86e2338c9319212e8f6565f260cc733",
-    "/frontend-balonmano/chunk-SWTJFYSS.js": "a16320472da827f50b1656aee4ec92449f5ad578",
+    "/frontend-balonmano/chunk-QM4VBTXC.js": "e68bb79d0d7e465dd58778027e802d9c96c08c6e",
+    "/frontend-balonmano/chunk-VFEHQYHF.js": "2430f1913c677be18f7f6eb7a5fe81e56fdc2184",
     "/frontend-balonmano/favicon.ico": "9c39f434fe1261f68c5e3eefdf734630d99c5670",
     "/frontend-balonmano/icons/icon-128x128.png": "f912963bdc6d5a38d8f1dd0afbaab2ce8d657acb",
     "/frontend-balonmano/icons/icon-144x144.png": "b155fd5f2fd5d2ea7760721063003c4cd95fd783",
@@ -55,11 +55,11 @@
     "/frontend-balonmano/icons/icon-512x512.png": "1de182f76f7329dfa8f9fcdd1fdcdd695bea6a99",
     "/frontend-balonmano/icons/icon-72x72.png": "aa88a6096bd973be7f6d7a5489bfa6bc2463f8c4",
     "/frontend-balonmano/icons/icon-96x96.png": "7fb8f59c30ce2ff12c700321a0b39e14b3dc8f95",
-    "/frontend-balonmano/index.html": "6abd8a619b5eca030da05e3c4e4c10748bff6a2c",
-    "/frontend-balonmano/main-CR3YTYU5.js": "1ab270520249cee44d634f89d9ba45a8920ad707",
+    "/frontend-balonmano/index.html": "6d1385ed7691999358d551d72fb2b6c2bf7e6267",
+    "/frontend-balonmano/main-RI7XC5JK.js": "095f00ae39148ad066823fd2755a1500bc10b29d",
     "/frontend-balonmano/manifest.webmanifest": "722b4d198814efc1c211586ab2b20af95203b8a1",
-    "/frontend-balonmano/polyfills-FFHMD2TL.js": "f49b49a155bc7d192db62a4c15d0a612b460a667",
-    "/frontend-balonmano/styles-EVRKIN67.css": "1e3942dd538a77cba9f6eb8d044ea0b30c4d17f5"
+    "/frontend-balonmano/polyfills-5CFQRCPP.js": "f2241e9a25858f895ce299d15f6f22e849e2fd72",
+    "/frontend-balonmano/styles-SOZDS7XW.css": "5d8c8a42e20528803103128524441651492afb04"
   },
   "navigationUrls": [
     {
