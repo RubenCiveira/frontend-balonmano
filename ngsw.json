@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1762787699907,
+  "timestamp": 1762788303570,
   "index": "/frontend-balonmano/index.html",
   "assetGroups": [
     {
@@ -46,15 +46,15 @@
   "hashTable": {
     "/frontend-balonmano/chunk-HYNDR7K5.js": "061e6c31cc1b296a6c23fc449508ab5f617cbc30",
     "/frontend-balonmano/chunk-NTQCFN4J.js": "8e3cb2e4726742e4fe6c386c00af156a2c8d8f47",
-    "/frontend-balonmano/favicon.ico": "9c39f434fe1261f68c5e3eefdf734630d99c5670",
-    "/frontend-balonmano/icons/icon-128x128.png": "f912963bdc6d5a38d8f1dd0afbaab2ce8d657acb",
-    "/frontend-balonmano/icons/icon-144x144.png": "b155fd5f2fd5d2ea7760721063003c4cd95fd783",
-    "/frontend-balonmano/icons/icon-152x152.png": "eae6e0f0c8afb8aaae339e2a569b43e9238e5e6c",
-    "/frontend-balonmano/icons/icon-192x192.png": "15c4180454633880d98674aa7394656196c91584",
-    "/frontend-balonmano/icons/icon-384x384.png": "94a915751ef6c9282df9aea405ad679230631814",
-    "/frontend-balonmano/icons/icon-512x512.png": "1de182f76f7329dfa8f9fcdd1fdcdd695bea6a99",
-    "/frontend-balonmano/icons/icon-72x72.png": "aa88a6096bd973be7f6d7a5489bfa6bc2463f8c4",
-    "/frontend-balonmano/icons/icon-96x96.png": "7fb8f59c30ce2ff12c700321a0b39e14b3dc8f95",
+    "/frontend-balonmano/favicon.ico": "c3923d1fda4133c8bbdbc6014009e61acb243991",
+    "/frontend-balonmano/icons/icon-128x128.png": "c1cd8b9e553d45f0f84cea3cbcd6f075adeab5ce",
+    "/frontend-balonmano/icons/icon-144x144.png": "9f9400353c4c0255393b9c1828f84e6650e65c7d",
+    "/frontend-balonmano/icons/icon-152x152.png": "09fc7a4dd8181f7b66260f04e7ed07f93d21c806",
+    "/frontend-balonmano/icons/icon-192x192.png": "74df8d96c67e28dfce2f87f2f668daa6969d85e7",
+    "/frontend-balonmano/icons/icon-384x384.png": "b6dd9d01edc2527f500bd59797c1b7a363379086",
+    "/frontend-balonmano/icons/icon-512x512.png": "ea49ed7277321e81b48181dfb2ffda30ab9034db",
+    "/frontend-balonmano/icons/icon-72x72.png": "52cac5fe3089e1fc1c6250457a59211ffb390123",
+    "/frontend-balonmano/icons/icon-96x96.png": "d8816fe141278757d676ee3ede1e5dc26cb02b38",
     "/frontend-balonmano/index.html": "07ee7acd53944bbdd318d728ae390477d1f42d14",
     "/frontend-balonmano/main-NAMKRFRR.js": "4e23f1986daca8f6ac36dcfbede131d34ea982f1",
     "/frontend-balonmano/manifest.webmanifest": "722b4d198814efc1c211586ab2b20af95203b8a1",
