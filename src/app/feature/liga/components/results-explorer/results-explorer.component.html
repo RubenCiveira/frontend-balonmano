@@ -1,19 +1,63 @@
 <mat-card style="margin-top: 12px">
   <mat-card-header>
     <mat-card-title>
-      {{ store.competicion() ? store.competicion()?.label + " - " : "" }}
-      {{ store.territorial()?.label }}</mat-card-title
-    >
+      {{
+        store.competicion()?.label?.includes( store.categoria()?.label! )
+          ? ""
+          : store.categoria()?.label + "-"
+      }}
+      {{ store.competicion()?.label }}
+      <!-- <small>{{  store.territorial()?.label  }}</small>  -->
+    </mat-card-title>
+    <!-- {{ store.jornada() ? '(Jornada ' + store.jornada()?.label + ')' : '(Jornada '+(store.jornadaActual() ? store.jornadaActual()?.label : 'actual') + ')' }} -->
     <mat-card-subtitle>
       {{ store.fase()?.label }}
       {{
         store.temporada() ? "(" + store.temporada()?.label + ")" : ""
       }}</mat-card-subtitle
     >
+    <span class="spacer"></span>
+    <mat-form-field class="selector-jornada" appearance="fill" tourAnchor="select-jornada">
+      <mat-label>Jornada</mat-label>
+      <mat-select
+        [disabled]="!store.fase() || store.jornadas().length === 0"
+        [value]="store.jornada()"
+        [compareWith]="compareByCode"
+        (selectionChange)="store.setJornada($event.value)"
+      >
+        @for (s of store.jornadas(); track s.code) {
+        <mat-option [value]="s"
+          >{{ s.label }}
+          {{
+            s.code === store.jornadaActual()?.code ? "(Actual)" : ""
+          }}</mat-option
+        >
+        }
+      </mat-select>
+    </mat-form-field>
   </mat-card-header>
   <mat-card-content>
     <div class="report">
-      @if (loading()) {
+      @if (!store.fase() ) {
+      <mat-icon class="ill" fontSet="material-symbols-outlined"
+        >search_insights</mat-icon
+      >
+      <h3>Selecciona una fase</h3>
+      <p>
+        Elige territorial, temporada, categoría y competición para ver los
+        partidos o la clasificación.
+      </p>
+
+      <div class="actions">
+        <button mat-flat-button color="primary" (click)="openMenu()">
+          <mat-icon>menu</mat-icon>
+          Abrir menú
+        </button>
+        <button mat-stroked-button color="primary" routerLink="/">
+          Limpiar selección
+        </button>
+      </div>
+      } @else if (loading()) {
       <div class="loading">
         <mat-progress-bar mode="indeterminate"></mat-progress-bar>
       </div>
@@ -39,10 +83,17 @@
         @for(p of partidos(); track p.code) {
         <article class="match-card mat-elevation-z1">
           <header class="match-head">
-            <span class="date" [tourAnchor]="$index === 0 ? 'fecha-partido' : ''">{{ date(p) }}</span>
-            <span class="status" [tourAnchor]="$index === 0 ? 'estado-partido' : ''" [class.played]="p.estado === 'FINAL'">{{
-              p.estado
-            }}</span>
+            <span
+              class="date"
+              [tourAnchor]="$index === 0 ? 'fecha-partido' : ''"
+              >{{ date(p) }}</span
+            >
+            <span
+              class="status"
+              [tourAnchor]="$index === 0 ? 'estado-partido' : ''"
+              [class.played]="p.estado === 'FINAL'"
+              >{{ p.estado }}</span
+            >
           </header>
 
           <div class="teams">
@@ -58,7 +109,10 @@
           </div>
 
           <div class="footer">
-            <div class="place" [tourAnchor]="$index === 0 ? 'lugar-partido' : ''">
+            <div
+              class="place"
+              [tourAnchor]="$index === 0 ? 'lugar-partido' : ''"
+            >
               <mat-icon>location_on</mat-icon>
               <span>{{ p.lugar?.label ?? "PDTE." }}</span>
             </div>

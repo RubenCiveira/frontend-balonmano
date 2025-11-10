@@ -1,6 +1,7 @@
 import {
   ApplicationRef,
   Component,
+  effect,
   OnDestroy,
   OnInit,
   signal,
@@ -17,6 +18,7 @@ import { filter, Subscription } from 'rxjs';
 import { SmallDeviceBreakPoints } from './feature/liga/service/break-point.service';
 import { TourMatMenuModule, TourService } from 'ngx-ui-tour-md-menu';
 import { onboard } from './app.onboarding';
+import { SidenavService } from './feature/liga/service/sidenav.service';
 
 @Component({
   selector: 'app-root',
@@ -42,13 +44,14 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     private readonly router: Router,
     private readonly appRef: ApplicationRef,
+    private readonly sidenavService: SidenavService,
     private readonly tourService: TourService,
     private readonly breakpoint: BreakpointObserver
   ) {
     this.router.events
       .pipe(filter((e) => e instanceof NavigationEnd))
       .subscribe((e) => {
-        if( this.isHandset() ) {
+        if( this.isHandset() && e.url.includes("&fase=") ) {
           this.sidenav()?.close();
         }
         this.tourService.end();
@@ -58,6 +61,12 @@ export class AppComponent implements OnInit, OnDestroy {
             localStorage.setItem(key, 'true');
             this.help();
           });
+        }
+      });
+      effect(() => {
+        const sidenav = this.sidenav();
+        if( sidenav ) {
+          this.sidenavService.attach( sidenav );
         }
       });
   }

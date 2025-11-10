@@ -2,6 +2,12 @@
   display: flex; align-items: center; gap: 8px; padding: 6px 0;
 }
 
+.selector-jornada {
+  width: 125px;
+}
+.spacer {
+    flex: 1;
+}
 /* Skeleton */
 .skeleton-list { display: grid; gap: 10px; margin-top: 12px; }
 .skeleton-item { display: grid; grid-template-columns: 40px 1fr 70px; align-items: center; gap: 10px; }
@@ -59,6 +65,7 @@
 .score .pill {
   display: inline-block; padding: 4px 10px; border-radius: 999px; font-weight: 600;
   background: rgba(0,0,0,.07);
+  white-space: nowrap;
 }
 .score .pill.ghost { opacity: .6; }
 .score.pending .pill { background: rgba(0,0,0,.06); }

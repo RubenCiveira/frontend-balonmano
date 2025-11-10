@@ -17,6 +17,11 @@ export function onboard(): any {
     '/partidos': [
       {
         anchorId: 'estado-partido',
+        title: 'Cambia la jornada',
+        content: 'Cambia entre jornadas para ver otras fechas',
+      },
+      {
+        anchorId: 'estado-partido',
         title: 'Estado',
         content: 'Indicación sobre si el partido está terminado o no',
       },
@@ -37,6 +42,12 @@ export function onboard(): any {
       }
     ],
     '/clasificacion': [
+      {
+        anchorId: 'estado-partido',
+        title: 'Cambia la jornada',
+        content: 'Cambia entre jornadas para ver otras fechas',
+        placement: 'down',
+      },
       {
         anchorId: 'partidos-ganados',
         title: 'Partidos ganados',

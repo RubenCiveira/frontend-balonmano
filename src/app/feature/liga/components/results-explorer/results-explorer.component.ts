@@ -1,4 +1,4 @@
-import { Component, effect, signal } from '@angular/core';
+import { Component, effect, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -18,27 +18,34 @@ import {
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SelectionStore } from '../../service/selection-store.service';
 import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
+import { RouterModule } from '@angular/router';
+import { MatOptionModule } from '@angular/material/core';
+import { SidenavService } from '../../service/sidenav.service';
 
 @Component({
-    selector: 'app-results-explorer',
-    imports: [
-        CommonModule,
-        FormsModule,
-        MatInputModule,
-        TourMatMenuModule,
-        MatFormFieldModule,
-        ReactiveFormsModule,
-        MatAutocompleteModule,
-        MatExpansionModule,
-        MatSelectModule,
-        MatButtonToggleModule,
-        MatCardModule,
-        MatButtonModule,
-        MatIconModule,
-        MatProgressBarModule,
-    ],
-    styleUrls: ['./results-explorer.component.scss'],
-    templateUrl: './results-explorer.component.html'
+  selector: 'app-results-explorer',
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatFormFieldModule,
+    MatInputModule,
+    RouterModule,
+    TourMatMenuModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatAutocompleteModule,
+    MatExpansionModule,
+    MatSelectModule,
+    MatButtonToggleModule,
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
+    MatProgressBarModule,
+  ],
+  styleUrls: ['./results-explorer.component.scss'],
+  templateUrl: './results-explorer.component.html',
 })
 export class ResultsExplorerComponent {
   partidos = signal<Partido[]>([]);
@@ -47,6 +54,7 @@ export class ResultsExplorerComponent {
 
   constructor(
     public readonly store: SelectionStore,
+    private readonly sidenavService: SidenavService,
     private readonly api: LigaApi
   ) {
     // Load territorials on start
@@ -83,8 +91,17 @@ export class ResultsExplorerComponent {
             }
           }
         });
+      } else {
+        setTimeout(() => {
+          this.partidos.set([]);
+          this.clasificaciones.set([]);
+        });
       }
     });
+  }
+
+  openMenu() {
+    this.sidenavService.open();
   }
 
   date(p: Partido): string {
