@@ -119,6 +119,22 @@ export class LigaApi {
         '/fase'
     );
   }
+  jornadaActual(fase: Fase): Observable<Jornada> {
+    return this.http.get<Jornada>(
+      this.base +
+        'territorial/' +
+        fase.competicion.categoria.temporada.territorial.code +
+        '/temporada/' +
+        fase.competicion.categoria.temporada.code +
+        '/categoria/' +
+        fase.competicion.categoria.code +
+        '/competicion/' +
+        fase.competicion.code +
+        '/fase/' +
+        fase.code +
+        '/jornada-actual'
+    );
+  }
   jornadas(fase: Fase): Observable<Jornada[]> {
     return this.http.get<Jornada[]>(
       this.base +
@@ -148,7 +164,7 @@ export class LigaApi {
         fase.competicion.code +
         '/fase/' +
         fase.code +
-        '/partido/'
+        '/partido'
     );
   }
   ultimaClasificacion(fase: Fase): Observable<Clasificacion[]> {
@@ -164,7 +180,7 @@ export class LigaApi {
         fase.competicion.code +
         '/fase/' +
         fase.code +
-        '/clasificacion/'
+        '/clasificacion'
     );
   }
   partidos(jornada: Jornada): Observable<Partido[]> {
@@ -182,7 +198,7 @@ export class LigaApi {
         jornada.fase.code +
         '/jornada/' +
         jornada.code +
-        'partido'
+        '/partido'
     );
   }
   clasificacion(jornada: Jornada): Observable<Clasificacion[]> {
@@ -200,7 +216,7 @@ export class LigaApi {
         jornada.fase.code +
         '/jornada/' +
         jornada.code +
-        'clasificacion'
+        '/clasificacion'
     );
   }
 }

@@ -1,52 +1,19 @@
-import {
-  Component,
-  effect,
-  inject,
-  OnDestroy,
-  OnInit,
-  signal,
-} from '@angular/core';
+import { Component, effect, OnDestroy, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
-import { MatTreeModule, MatTreeNestedDataSource } from '@angular/material/tree';
-import { NestedTreeControl } from '@angular/cdk/tree';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-
-import {
-  LigaApi,
-  Territorial,
-  Temporada,
-  Categoria,
-  Competicion,
-  Fase,
-} from '../../service/liga-api.service';
-import { firstValueFrom, Subscription } from 'rxjs';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
-
-type NodeKind =
-  | 'territorial'
-  | 'temporada'
-  | 'categoria'
-  | 'competicion'
-  | 'fase';
-
-interface TreeNode<T = unknown> {
-  kind: NodeKind;
-  label: string;
-  value: T;
-  children?: TreeNode[];
-  loaded?: boolean;
-  loading?: boolean;
-}
+import { Territorial } from '../../service/liga-api.service';
+import { SelectionStore } from '../../service/selection-store.service';
 
 @Component({
   selector: 'app-nav-bar-tree',
@@ -64,8 +31,6 @@ interface TreeNode<T = unknown> {
     MatButtonModule,
     MatMenuModule,
     MatIconModule,
-    RouterModule,
-    MatTreeModule,
     MatProgressSpinnerModule,
   ],
   styles: [
@@ -90,7 +55,7 @@ interface TreeNode<T = unknown> {
       <mat-autocomplete
         #autoTerritoriales="matAutocomplete"
         [displayWith]="display"
-        (optionSelected)="territorial.set($event.option.value)"
+        (optionSelected)="store.setTerritorial($event.option.value)"
       >
         @for (option of filteredTerritorials(); track option.code) {
         <mat-option [value]="option">{{ option.label }}</mat-option>
@@ -100,11 +65,12 @@ interface TreeNode<T = unknown> {
     <mat-form-field class="temporada" appearance="fill">
       <mat-label>Temporada</mat-label>
       <mat-select
-        [disabled]="!territorial() || temporadas().length === 0"
-        [value]="temporada()"
-        (selectionChange)="temporada.set($event.value)"
+        [disabled]="!store.territorial() || store.temporadas().length === 0"
+        [value]="store.temporada()"
+        [compareWith]="compareByCode"
+        (selectionChange)="store.setTemporada($event.value)"
       >
-        @for (s of temporadas(); track s.code) {
+        @for (s of store.temporadas(); track s.code) {
         <mat-option [value]="s">{{ s.label }}</mat-option>
         }
       </mat-select>
@@ -113,11 +79,12 @@ interface TreeNode<T = unknown> {
     <mat-form-field class="categoria" appearance="fill">
       <mat-label>Categoria</mat-label>
       <mat-select
-        [disabled]="!temporada() || categorias().length === 0"
-        [value]="categoria()"
-        (selectionChange)="categoria.set($event.value)"
+        [disabled]="!store.temporada() || store.categorias().length === 0"
+        [value]="store.categoria()"
+        [compareWith]="compareByCode"
+        (selectionChange)="store.setCategoria($event.value)"
       >
-        @for (s of categorias(); track s.code) {
+        @for (s of store.categorias(); track s.code) {
         <mat-option [value]="s">{{ s.label }}</mat-option>
         }
       </mat-select>
@@ -125,11 +92,12 @@ interface TreeNode<T = unknown> {
     <mat-form-field class="competicion" appearance="fill">
       <mat-label>Competicion</mat-label>
       <mat-select
-        [disabled]="!categoria() || competiciones().length === 0"
-        [value]="competicion()"
-        (selectionChange)="competicion.set($event.value)"
+        [disabled]="!store.categoria() || store.competiciones().length === 0"
+        [value]="store.competicion()"
+        [compareWith]="compareByCode"
+        (selectionChange)="store.setCompeticion($event.value)"
       >
-        @for (s of competiciones(); track s.code) {
+        @for (s of store.competiciones(); track s.code) {
         <mat-option [value]="s">{{ s.label }}</mat-option>
         }
       </mat-select>
@@ -137,11 +105,12 @@ interface TreeNode<T = unknown> {
     <mat-form-field class="fase" appearance="fill">
       <mat-label>Fase</mat-label>
       <mat-select
-        [disabled]="!categoria() || fases().length === 0"
-        [value]="fase()"
-        (selectionChange)="fase.set($event.value)"
+        [disabled]="!store.categoria() || store.fases().length === 0"
+        [value]="store.fase()"
+        [compareWith]="compareByCode"
+        (selectionChange)="store.setFase($event.value)"
       >
-        @for (s of fases(); track s.code) {
+        @for (s of store.fases(); track s.code) {
         <mat-option [value]="s">{{ s.label }}</mat-option>
         }
       </mat-select>
@@ -150,128 +119,14 @@ interface TreeNode<T = unknown> {
 })
 export class NavBarTreeComponent implements OnInit, OnDestroy {
   territorialControl = new FormControl('');
-  territorial = signal<Territorial | null>(null);
-  territoriales = signal<Territorial[]>([]);
   filteredTerritorials = signal<Territorial[]>([]);
-
-  temporada = signal<Temporada | null>(null);
-  categoria = signal<Categoria | null>(null);
-  competicion = signal<Competicion | null>(null);
-  fase = signal<Fase | null>(null);
-
-  temporadas = signal<Temporada[]>([]);
-  categorias = signal<Categoria[]>([]);
-  competiciones = signal<Competicion[]>([]);
-  fases = signal<Fase[]>([]);
 
   private subscription = new Subscription();
 
-  constructor(private readonly api: LigaApi, private readonly router: Router) {
-    // Carga raíz (territoriales)
+  constructor(public readonly store: SelectionStore) {
     effect(() => {
-      firstValueFrom(this.api.territoriales()).then((list) => {
-        this.territoriales.set(list);
-        this.territorial.set(null);
-      });
-    });
-    effect(async () => {
-      const territorial = this.territorial();
-      if (territorial) {
-        this.router.navigate(['t', territorial.code]);
-        firstValueFrom(this.api.temporadas(territorial)).then((list) => {
-          this.temporadas.set(list);
-          this.temporada.set(null);
-        });
-      } else {
-        setTimeout(() => {
-          this.temporadas.set([]);
-          this.temporada.set(null);
-        });
-      }
-    });
-    effect(() => {
-      const temporada = this.temporada();
-      if (temporada) {
-        this.router.navigate([
-          't',
-          temporada.territorial.code,
-          's',
-          temporada.code,
-        ]);
-        firstValueFrom(this.api.categorias(temporada)).then((list) => {
-          this.categorias.set(list);
-          this.categoria.set(null);
-        });
-      } else {
-        setTimeout(() => {
-          this.categorias.set([]);
-          this.categoria.set(null);
-        });
-      }
-    });
-    effect(() => {
-      const categoria = this.categoria();
-      if (categoria) {
-        this.router.navigate([
-          't',
-          categoria.temporada.territorial.code,
-          's',
-          categoria.temporada.code,
-          'cat',
-          categoria.code,
-        ]);
-        firstValueFrom(this.api.competiciones(categoria)).then((list) => {
-          this.competiciones.set(list);
-          this.competicion.set(null);
-        });
-      } else {
-        setTimeout(() => {
-          this.competiciones.set([]);
-          this.competicion.set(null);
-        });
-      }
-    });
-    effect(() => {
-      const competicion = this.competicion();
-      if (competicion) {
-        this.router.navigate([
-          't',
-          competicion.categoria.temporada.territorial.code,
-          's',
-          competicion.categoria.temporada.code,
-          'cat',
-          competicion.categoria.code,
-          'comp',
-          competicion.categoria.code,
-        ]);
-        firstValueFrom(this.api.fases(competicion)).then((list) => {
-          this.fases.set(list);
-          this.fase.set(null);
-        });
-      } else {
-        setTimeout(() => {
-          this.fases.set([]);
-          this.fase.set(null);
-        });
-      }
-    });
-    effect(() => {
-      const fase = this.fase();
-      if (fase) {
-        this.router.navigate([
-          't',
-          fase.competicion.categoria.temporada.territorial.code,
-          's',
-          fase.competicion.categoria.temporada.code,
-          'cat',
-          fase.competicion.categoria.code,
-          'comp',
-          fase.competicion.categoria.code,
-          'f',
-          fase.code,
-        ]);
-      } else {
-      }
+      const t = this.store.territorial();
+      this.territorialControl.setValue(t as any, { emitEvent: false });
     });
   }
 
@@ -282,7 +137,7 @@ export class NavBarTreeComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subscription.add(
       this.territorialControl.valueChanges.subscribe((text) => {
-        const list = this.territoriales();
+        const list = this.store.territoriales();
         if (!(text as any).label) {
           this.filteredTerritorials.set(
             text
@@ -302,5 +157,9 @@ export class NavBarTreeComponent implements OnInit, OnDestroy {
 
   display(item: any) {
     return item?.label ?? '';
+  }
+
+  compareByCode(a?: { code: string } | null, b?: { code: string } | null) {
+    return !!a && !!b && a.code === b.code;
   }
 }
