@@ -15,9 +15,8 @@ import { MatButtonModule } from '@angular/material/button';
 
 // territorial=20&temporada=2526&categoria=2605&competicion=209564&fase=1033718
 @Component({
-  standalone: true,
-  imports: [MatButtonModule],
-  template: `
+    imports: [MatButtonModule],
+    template: `
     <p></p>
     <p>Carballiño</p>
     <ul>
@@ -41,7 +40,7 @@ import { MatButtonModule } from '@angular/material/button';
         </button>
       </li>
     </ul>
-  `,
+  `
 })
 export class HomeComponent {
   public constructor(private readonly store: SelectionStore) {}

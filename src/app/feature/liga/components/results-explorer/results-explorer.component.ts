@@ -21,25 +21,24 @@ import { SelectionStore } from '../../service/selection-store.service';
 type ViewMode = 'partidos' | 'clasificacion';
 
 @Component({
-  selector: 'app-results-explorer',
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatInputModule,
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    MatAutocompleteModule,
-    MatExpansionModule,
-    MatSelectModule,
-    MatButtonToggleModule,
-    MatCardModule,
-    MatButtonModule,
-    MatIconModule,
-    MatProgressBarModule,
-  ],
-  styleUrls: ['./results-explorer.component.scss'],
-  templateUrl: './results-explorer.component.html',
+    selector: 'app-results-explorer',
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatInputModule,
+        MatFormFieldModule,
+        ReactiveFormsModule,
+        MatAutocompleteModule,
+        MatExpansionModule,
+        MatSelectModule,
+        MatButtonToggleModule,
+        MatCardModule,
+        MatButtonModule,
+        MatIconModule,
+        MatProgressBarModule,
+    ],
+    styleUrls: ['./results-explorer.component.scss'],
+    templateUrl: './results-explorer.component.html'
 })
 export class ResultsExplorerComponent {
   partidos = signal<Partido[]>([]);

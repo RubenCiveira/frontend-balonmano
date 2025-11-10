@@ -18,26 +18,25 @@ import { RouterLink } from '@angular/router';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 @Component({
-  selector: 'app-nav-bar-tree',
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatSelectModule,
-    MatOptionModule,
-    MatInputModule,
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    MatAutocompleteModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatMenuModule,
-    MatIconModule,
-    MatProgressSpinnerModule,
-    MatButtonToggleModule,
-  ],
-  styles: [
-    `
+    selector: 'app-nav-bar-tree',
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatSelectModule,
+        MatOptionModule,
+        MatInputModule,
+        MatFormFieldModule,
+        ReactiveFormsModule,
+        MatAutocompleteModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatMenuModule,
+        MatIconModule,
+        MatProgressSpinnerModule,
+        MatButtonToggleModule,
+    ],
+    styles: [
+        `
       :host {
         display: flex;
         flex-direction: column;
@@ -47,8 +46,8 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
         margin-bottom: 10px;
       }
     `,
-  ],
-  template: `
+    ],
+    template: `
     <mat-button-toggle-group class="buttons"
       [value]="store.viewMode()"
       (change)="store.setViewMode($event.value)"
@@ -152,7 +151,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
         }
       </mat-select>
     </mat-form-field>
-  `,
+  `
 })
 export class NavBarTreeComponent implements OnInit, OnDestroy {
   territorialControl = new FormControl('');
