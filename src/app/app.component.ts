@@ -1,4 +1,11 @@
-import { ApplicationRef, Component, OnDestroy, OnInit, signal, viewChild } from '@angular/core';
+import {
+  ApplicationRef,
+  Component,
+  OnDestroy,
+  OnInit,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
@@ -38,8 +45,18 @@ export class AppComponent implements OnInit, OnDestroy {
     private readonly tourService: TourService,
     private readonly breakpoint: BreakpointObserver
   ) {
-    this.router.events.pipe(filter(e => e instanceof NavigationEnd))
-      .subscribe(() => this.tourService.end());
+    this.router.events
+      .pipe(filter((e) => e instanceof NavigationEnd))
+      .subscribe((e) => {
+        this.tourService.end();
+        const key = 'tour-executed-' + e.url.split('?')[0];
+        if (!localStorage.getItem(key)) {
+          setTimeout(() => {
+            localStorage.setItem(key, 'true');
+            this.help();
+          });
+        }
+      });
   }
 
   ngOnInit(): void {
@@ -55,10 +72,6 @@ export class AppComponent implements OnInit, OnDestroy {
           }
         })
     );
-    if( !localStorage.getItem("tour-executed") ) {
-      localStorage.setItem("tour-executed", "true");
-      this.help();
-    }
   }
 
   ngOnDestroy(): void {
