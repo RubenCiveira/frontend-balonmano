@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1762810479556,
+  "timestamp": 1762811366694,
   "index": "/frontend-balonmano/index.html",
   "assetGroups": [
     {
@@ -55,7 +55,7 @@
     "/frontend-balonmano/icons/icon-512x512.png": "ea49ed7277321e81b48181dfb2ffda30ab9034db",
     "/frontend-balonmano/icons/icon-72x72.png": "52cac5fe3089e1fc1c6250457a59211ffb390123",
     "/frontend-balonmano/icons/icon-96x96.png": "d8816fe141278757d676ee3ede1e5dc26cb02b38",
-    "/frontend-balonmano/index.html": "aea6f4cc0ca0a032f1bbe4694abebbd4df62ddd0",
+    "/frontend-balonmano/index.html": "e9690724df4b63d8d5ab3972555eeff52ed09be2",
     "/frontend-balonmano/main-2SHVJ2OM.js": "e55ff717f6c18531674494ab5ad1aed354eccaac",
     "/frontend-balonmano/manifest.webmanifest": "722b4d198814efc1c211586ab2b20af95203b8a1",
     "/frontend-balonmano/polyfills-5CFQRCPP.js": "f2241e9a25858f895ce299d15f6f22e849e2fd72",
