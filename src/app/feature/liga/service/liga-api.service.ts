@@ -39,13 +39,11 @@ export interface Cancha {
 export interface Equipo {
   code: string;
   label: string;
-  territorial: Territorial;
   logo: string;
 }
 export interface Partido {
   code: string;
   label: string;
-  jornada: Jornada;
   local: Equipo;
   visitante: Equipo;
   estado: string;
@@ -58,7 +56,6 @@ export interface Partido {
 export interface Clasificacion {
   code: string;
   label: string;
-  jornada: Jornada;
   equipo: Equipo;
   posicion: number;
   diferencia: number;
