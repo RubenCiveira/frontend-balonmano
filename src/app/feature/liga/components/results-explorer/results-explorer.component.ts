@@ -1,4 +1,4 @@
-import { Component, effect, output, signal } from '@angular/core';
+import { Component, effect, OnDestroy, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -14,13 +14,15 @@ import {
   LigaApi,
   Partido,
   Clasificacion,
+  Equipo,
 } from '../../service/liga-api.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SelectionStore } from '../../service/selection-store.service';
 import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MatOptionModule } from '@angular/material/core';
 import { SidenavService } from '../../service/sidenav.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-results-explorer',
@@ -47,15 +49,18 @@ import { SidenavService } from '../../service/sidenav.service';
   styleUrls: ['./results-explorer.component.scss'],
   templateUrl: './results-explorer.component.html',
 })
-export class ResultsExplorerComponent {
+export class ResultsExplorerComponent implements OnDestroy {
   partidos = signal<Partido[]>([]);
   clasificaciones = signal<Clasificacion[]>([]);
   loading = signal<boolean>(true);
 
+  private subscription = new Subscription();
+
   constructor(
+    private readonly api: LigaApi,
+    private readonly route: Router,
     public readonly store: SelectionStore,
-    private readonly sidenavService: SidenavService,
-    private readonly api: LigaApi
+    private readonly sidenavService: SidenavService
   ) {
     // Load territorials on start
     effect(() => {
@@ -67,27 +72,35 @@ export class ResultsExplorerComponent {
           this.loading.set(true);
           if (view === 'partidos') {
             if (jornada) {
-              this.api.partidos(jornada).subscribe((p) => {
-                this.partidos.set(p);
-                this.loading.set(false);
-              });
+              this.subscription.add(
+                this.api.partidos(jornada).subscribe((p) => {
+                  this.partidos.set(p);
+                  this.loading.set(false);
+                })
+              );
             } else {
-              this.api.ultimosPartidos(fase).subscribe((p) => {
-                this.partidos.set(p);
-                this.loading.set(false);
-              });
+              this.subscription.add(
+                this.api.ultimosPartidos(fase).subscribe((p) => {
+                  this.partidos.set(p);
+                  this.loading.set(false);
+                })
+              );
             }
           } else {
             if (jornada) {
-              this.api.clasificacion(jornada).subscribe((p) => {
-                this.clasificaciones.set(p);
-                this.loading.set(false);
-              });
+              this.subscription.add(
+                this.api.clasificacion(jornada).subscribe((p) => {
+                  this.clasificaciones.set(p);
+                  this.loading.set(false);
+                })
+              );
             } else {
-              this.api.ultimaClasificacion(fase).subscribe((p) => {
-                this.clasificaciones.set(p);
-                this.loading.set(false);
-              });
+              this.subscription.add(
+                this.api.ultimaClasificacion(fase).subscribe((p) => {
+                  this.clasificaciones.set(p);
+                  this.loading.set(false);
+                })
+              );
             }
           }
         });
@@ -100,8 +113,19 @@ export class ResultsExplorerComponent {
     });
   }
 
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
   openMenu() {
     this.sidenavService.open();
+  }
+
+  detalle(e: Equipo) {
+    this.route.navigate(['/team', e.code], {
+      replaceUrl: true,
+      queryParamsHandling: 'preserve',
+    });
   }
 
   date(p: Partido): string {

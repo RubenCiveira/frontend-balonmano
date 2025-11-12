@@ -53,6 +53,43 @@ export interface Partido {
   lugar?: Cancha;
 }
 
+export interface Personal {
+    nombre: string;
+    edad?: number;
+    foto?: string;
+    baja?: string;
+}
+
+export interface Inscrito {
+    nombre: string;
+    goles?: number;
+    edad?: number;
+    foto?: string;
+    baja?: string;
+}
+
+export interface Invitado {
+    nombre: string;
+    goles?: number;
+    edad?: number;
+    foto?: string;
+    baja?: string;
+}
+
+export interface DetalleEquipo {
+  code: string;
+  label: string;
+  logo: string;
+  telefono?: string;
+  email?: string;
+  responsable?: string;
+  cancha?: string;
+  club?: string;
+  personal: Personal[];
+  jugadores: Inscrito[];
+  invitados: Invitado[];
+}
+
 export interface Clasificacion {
   code: string;
   label: string;
@@ -179,6 +216,24 @@ export class LigaApi {
         '/fase/' +
         fase.code +
         '/clasificacion'
+    );
+  }
+  detalleEquipo(fase: Fase, equipo: Equipo): Observable<DetalleEquipo> {
+    // /equipo/ZXF1aXBvLnBocD9pZF9lcXVpcG89MjIzODg2JmlkPTEwMzM3MTgmaWRfc3VwZXJmaWNpZT0x
+    return this.http.get<DetalleEquipo>(
+        this.base +
+        'territorial/' +
+        fase.competicion.categoria.temporada.territorial.code +
+        '/temporada/' +
+        fase.competicion.categoria.temporada.code +
+        '/categoria/' +
+        fase.competicion.categoria.code +
+        '/competicion/' +
+        fase.competicion.code +
+        '/fase/' +
+        fase.code +
+        '/equipo/' + 
+        equipo.code
     );
   }
   partidos(jornada: Jornada): Observable<Partido[]> {

@@ -1,0 +1,188 @@
+@if( loading() ) {
+<mat-card class="skel-card">
+  <!-- skeleton header -->
+  <div class="header">
+    <div class="sk-logo shimmer"></div>
+    <div>
+      <div class="sk-line shimmer" style="width: 180px"></div>
+      <div class="meta" style="margin-top: 8px">
+        <div class="sk-chip shimmer"></div>
+        <div class="sk-chip shimmer"></div>
+      </div>
+    </div>
+  </div>
+  <!-- skeleton lists -->
+  <div class="section" style="margin-top: 12px">
+    <div class="sk-line shimmer" style="width: 120px; margin-bottom: 8px"></div>
+    <div class="list">
+      <div class="item">
+        <div class="avatar shimmer"></div>
+        <div>
+          <div class="sk-line shimmer" style="width: 160px"></div>
+          <div class="sk-line shimmer short" style="margin-top: 6px"></div>
+        </div>
+        <div class="sk-chip shimmer"></div>
+      </div>
+      <div class="item">
+        <div class="avatar shimmer"></div>
+        <div>
+          <div class="sk-line shimmer" style="width: 140px"></div>
+          <div class="sk-line shimmer short" style="margin-top: 6px"></div>
+        </div>
+        <div class="sk-chip shimmer"></div>
+      </div>
+    </div>
+  </div>
+</mat-card>
+} @else {
+<mat-card>
+  <div class="title">{{ detalle()?.label }}</div>
+  <div class="header">
+    <img
+      class="logo"
+      [src]="detalle()?.logo"
+      alt=""
+      loading="lazy"
+      decoding="async"
+    />
+    <div>
+      <div class="meta">
+        @if (detalle()?.club) {
+        <span class="chip"
+          ><mat-icon>shield</mat-icon> {{ detalle()?.club }}</span
+        >
+        } @if (detalle()?.responsable) {
+        <span class="chip"
+          ><mat-icon>person</mat-icon> {{ detalle()?.responsable }}</span
+        >
+        } @if (detalle()?.telefono) {
+        <span class="chip"
+          ><mat-icon>call</mat-icon> {{ detalle()?.telefono }}</span
+        >
+        } @if (detalle()?.email) {
+        <span class="chip"
+          ><mat-icon>mail</mat-icon> {{ detalle()?.email }}</span
+        >
+        }
+      </div>
+    </div>
+  </div>
+  @if (detalle()?.cancha) {
+  <div class="meta"></div>
+  <div class="meta">
+    <span class="chip"
+      ><mat-icon>location_on</mat-icon> {{ detalle()?.cancha }}</span
+    >
+  </div>
+  }
+</mat-card>
+
+<!-- PERSONAL -->
+<section class="section">
+  <h3><mat-icon>badge</mat-icon> Cuerpo técnico</h3>
+  @if (detalle()?.personal?.length) {
+  <div class="list">
+    @for (p of detalle()!.personal; track p.nombre) {
+    <div class="item mat-elevation-z1">
+      <img
+        class="avatar"
+        [src]="p.foto || '/assets/avatar-staff.svg'"
+        alt=""
+        loading="lazy"
+      />
+      <div>
+        <div class="name">{{ p.nombre }}</div>
+        <div class="sub">
+          @if (p.edad) { <span>{{ p.edad }} años</span> } @if (p.baja) {
+          <span> · Baja: {{ p.baja }}</span> }
+        </div>
+      </div>
+      @if (p.baja) { <span class="badge loss">Baja</span> }
+    </div>
+    }
+  </div>
+  } @else {
+  <div class="empty">Sin personal registrado.</div>
+  }
+</section>
+
+<!-- JUGADORES -->
+<section class="section">
+  <h3><mat-icon>sports_handball</mat-icon> Jugadores</h3>
+  @if (detalle()?.jugadores?.length) {
+  <div class="list">
+    @for (j of detalle()!.jugadores; track j.nombre) {
+    <div class="item mat-elevation-z1">
+      <img
+        class="avatar"
+        [src]="j.foto || '/assets/avatar-player.svg'"
+        alt=""
+        loading="lazy"
+      />
+      <div>
+        <div class="name">{{ j.nombre }}</div>
+        <div class="sub">
+          @if (j.edad) { <span>{{ j.edad }} años</span> } @if (j.goles != null)
+          {
+          <span>
+            · Goles: <b>{{ j.goles }}</b></span
+          >
+          } @if (j.baja) { <span> · Baja: {{ j.baja }}</span> }
+        </div>
+      </div>
+      @if (j.goles != null) {
+      <span class="badge win">{{ j.goles }}</span>
+      }
+    </div>
+    }
+  </div>
+  } @else {
+  <div class="empty">Sin jugadores.</div>
+  }
+</section>
+
+<!-- INVITADOS -->
+<section class="section">
+  <h3><mat-icon>group_add</mat-icon> Invitados</h3>
+  @if (detalle()?.invitados?.length) {
+  <div class="list">
+    @for (g of detalle()!.invitados; track g.nombre) {
+    <div class="item mat-elevation-z1">
+      <img
+        class="avatar"
+        [src]="g.foto || '/assets/avatar-guest.svg'"
+        alt=""
+        loading="lazy"
+      />
+      <div>
+        <div class="name">{{ g.nombre }}</div>
+        <div class="sub">
+          @if (g.edad) { <span>{{ g.edad }} años</span> } @if (g.goles != null)
+          {
+          <span>
+            · Goles: <b>{{ g.goles }}</b></span
+          >
+          } @if (g.baja) { <span> · Baja: {{ g.baja }}</span> }
+        </div>
+      </div>
+      @if (g.goles != null) {
+      <span class="badge">{{ g.goles }}</span>
+      }
+    </div>
+    }
+  </div>
+  } @else {
+  <div class="empty">Sin invitados.</div>
+  }
+</section>
+
+<div style="height: 16px"></div>
+<div class="empty">
+  <button mat-stroked-button color="primary" (click)="verClasificacion()">
+    <mat-icon>arrow_back</mat-icon> Volver a clasficación
+  </button>
+  <button mat-stroked-button color="primary" (click)="verPartidos()">
+    <mat-icon>arrow_back</mat-icon> Volver a partidos
+  </button>
+</div>
+}
