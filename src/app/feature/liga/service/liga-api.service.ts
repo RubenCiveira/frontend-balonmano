@@ -61,6 +61,7 @@ export interface Clasificacion {
   jornada: Jornada;
   equipo: Equipo;
   posicion: number;
+  diferencia: number;
   puntos: number;
   ganados: number;
   empatados: number;

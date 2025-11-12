@@ -90,10 +90,14 @@
 .pos {
   width: 44px; height: 44px;
   border-radius: 10px;
-  display: grid; place-items: center;
-  font-weight: 800;
+  display: grid; place-items: center; grid-column: 1 1;
+  font-weight: 800; white-space: nowrap;
   background: color-mix(in srgb, var(--mat-sys-primary) 14%, transparent);
   color: color-mix(in srgb, var(--mat-sys-primary) 80%, black);
+}
+
+.diff {
+  font-size: smaller; font-weight: lighter;
 }
 
 .logo {
