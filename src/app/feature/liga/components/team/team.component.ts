@@ -11,6 +11,7 @@ import {
 import { SelectionStore } from '../../service/selection-store.service';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { Location } from '@angular/common';
 
 @Component({
   imports: [MatButtonModule, MatCardModule, MatIconModule],
@@ -23,10 +24,11 @@ export class TeamComponent implements OnInit, OnDestroy {
   loading = signal<boolean>(true);
   team = signal<Equipo | null>(null);
   detalle = signal<DetalleEquipo | null>(null);
-  
+
   public constructor(
     private readonly api: LigaApi,
     public readonly store: SelectionStore,
+    private readonly location: Location,
     private readonly route: Router,
     private readonly actived: ActivatedRoute
   ) {
@@ -49,6 +51,10 @@ export class TeamComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+  }
+
+  volver() {
+    this.location.back();
   }
 
   verPartidos() {

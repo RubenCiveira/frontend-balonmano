@@ -8,6 +8,9 @@
   width:64px; height:64px; object-fit:contain; border-radius:12px;
   background:#fff; box-shadow: inset 0 0 0 1px rgba(0,0,0,.06);
 }
+.title-row { 
+  display: flex; align-items: center;
+}
 .title { font-weight:800; font-size: clamp(18px, 4vw, 24px); line-height:1.1; }
 .meta { display:flex; flex-wrap:wrap; gap:8px; margin-top:6px; }
 .meta .chip {
@@ -47,6 +50,55 @@
   text-align:center; opacity:.7; padding:12px 0;
 }
 
+/* Grid responsive */
+.players-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat( auto-fill, minmax(140px, 1fr) );
+}
+
+/* Tarjeta */
+.player-card {
+  display: grid;
+  grid-template-rows: auto 1fr auto; /* foto | info | stats */
+  padding: 10px;
+  border-radius: 12px;
+  background: var(--mat-sys-surface, #fff);
+}
+
+/* Foto */
+.avatar-wrap {
+  aspect-ratio: 4 / 3;          /* marco estable */
+  display: grid; place-items: center;
+  border-radius: 10px; overflow: hidden;
+  background: #f3f5f8;          /* color de banda */
+}
+.avatar {
+  width: 100%; height: 100%;
+  object-fit: contain;          /* NO recorta */
+  object-position: center center;
+}
+
+/* Texto */
+.info { padding-top: 8px; min-width: 0; }
+.name {
+  font-weight: 700; line-height: 1.1;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.sub { font-size: 12px; opacity: .75; }
+
+/* Stats (golaveraje) */
+.stats {
+  margin-top: 8px;
+  display: flex; justify-content: flex-start;
+}
+.stat {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 3px 10px; border-radius: 999px;
+  background: rgba(0,0,0,.06); font-size: 12px; font-weight: 600;
+}
+.icon.sm { font-size: 18px; width: 18px; height: 18px; }
+
 /* Skeletons */
 .skel-card { padding:12px; border-radius:12px; background: var(--mat-sys-surface, #fff); }
 .shimmer {
@@ -60,8 +112,12 @@
 
 @keyframes shimmer { 0% {background-position: 100% 0} 100% {background-position: 0 0} }
 
-/* Layout >= tablet: separa cabecera */
-@media (min-width: 680px) {
+@media (max-width: 620px) {
   .header { grid-template-columns: 72px 1fr; }
   .logo { width:72px; height:72px; }
+}
+
+/* Un poco más grande en pantallas amplias */
+@media (min-width: 900px) {
+  .players-grid { grid-template-columns: repeat( auto-fill, minmax(180px, 1fr) ); }
 }

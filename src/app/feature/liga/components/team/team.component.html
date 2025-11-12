@@ -36,7 +36,12 @@
 </mat-card>
 } @else {
 <mat-card>
-  <div class="title">{{ detalle()?.label }}</div>
+    <div class="title-row">
+        <button mat-icon-button color="primary" (click)="verClasificacion()">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+        <div class="title">{{ detalle()?.label }}</div>
+    </div>
   <div class="header">
     <img
       class="logo"
@@ -81,24 +86,31 @@
 <section class="section">
   <h3><mat-icon>badge</mat-icon> Cuerpo técnico</h3>
   @if (detalle()?.personal?.length) {
-  <div class="list">
-    @for (p of detalle()!.personal; track p.nombre) {
-    <div class="item mat-elevation-z1">
-      <img
-        class="avatar"
-        [src]="p.foto || '/assets/avatar-staff.svg'"
-        alt=""
-        loading="lazy"
-      />
-      <div>
-        <div class="name">{{ p.nombre }}</div>
+  <div class="players-grid">
+    @for (j of detalle()!.personal; track j.nombre) {
+    <article class="player-card mat-elevation-z1">
+      <div class="avatar-wrap">
+        <img
+          class="avatar"
+          [src]="j.foto || '/assets/avatar-player.svg'"
+          alt=""
+          loading="lazy"
+        />
+      </div>
+
+      <div class="info">
+        <div class="name" [title]="j.nombre">{{ j.nombre }}</div>
         <div class="sub">
-          @if (p.edad) { <span>{{ p.edad }} años</span> } @if (p.baja) {
-          <span> · Baja: {{ p.baja }}</span> }
+          @if (j.edad) { <span>{{ j.edad }} años</span> }
         </div>
       </div>
-      @if (p.baja) { <span class="badge loss">Baja</span> }
-    </div>
+
+      <div class="stats">
+        <span class="stat">
+          <mat-icon class="icon sm">sports_handball</mat-icon>
+        </span>
+      </div>
+    </article>
     }
   </div>
   } @else {
@@ -110,30 +122,32 @@
 <section class="section">
   <h3><mat-icon>sports_handball</mat-icon> Jugadores</h3>
   @if (detalle()?.jugadores?.length) {
-  <div class="list">
+  <div class="players-grid">
     @for (j of detalle()!.jugadores; track j.nombre) {
-    <div class="item mat-elevation-z1">
-      <img
-        class="avatar"
-        [src]="j.foto || '/assets/avatar-player.svg'"
-        alt=""
-        loading="lazy"
-      />
-      <div>
-        <div class="name">{{ j.nombre }}</div>
+    <article class="player-card mat-elevation-z1">
+      <div class="avatar-wrap">
+        <img
+          class="avatar"
+          [src]="j.foto || '/assets/avatar-player.svg'"
+          alt=""
+          loading="lazy"
+        />
+      </div>
+
+      <div class="info">
+        <div class="name" [title]="j.nombre">{{ j.nombre }}</div>
         <div class="sub">
-          @if (j.edad) { <span>{{ j.edad }} años</span> } @if (j.goles != null)
-          {
-          <span>
-            · Goles: <b>{{ j.goles }}</b></span
-          >
-          } @if (j.baja) { <span> · Baja: {{ j.baja }}</span> }
+          @if (j.edad) { <span>{{ j.edad }} años</span> }
         </div>
       </div>
-      @if (j.goles != null) {
-      <span class="badge win">{{ j.goles }}</span>
-      }
-    </div>
+
+      <div class="stats">
+        <span class="stat">
+          <mat-icon class="icon sm">sports_handball</mat-icon>
+          <b>{{ j.goles ?? 0 }}</b> goles
+        </span>
+      </div>
+    </article>
     }
   </div>
   } @else {
@@ -145,37 +159,39 @@
 <section class="section">
   <h3><mat-icon>group_add</mat-icon> Invitados</h3>
   @if (detalle()?.invitados?.length) {
-  <div class="list">
-    @for (g of detalle()!.invitados; track g.nombre) {
-    <div class="item mat-elevation-z1">
-      <img
-        class="avatar"
-        [src]="g.foto || '/assets/avatar-guest.svg'"
-        alt=""
-        loading="lazy"
-      />
-      <div>
-        <div class="name">{{ g.nombre }}</div>
+  <div class="players-grid">
+    @for (j of detalle()!.invitados; track j.nombre) {
+    <article class="player-card mat-elevation-z1">
+      <div class="avatar-wrap">
+        <img
+          class="avatar"
+          [src]="j.foto || '/assets/avatar-player.svg'"
+          alt=""
+          loading="lazy"
+        />
+      </div>
+
+      <div class="info">
+        <div class="name" [title]="j.nombre">{{ j.nombre }}</div>
         <div class="sub">
-          @if (g.edad) { <span>{{ g.edad }} años</span> } @if (g.goles != null)
-          {
-          <span>
-            · Goles: <b>{{ g.goles }}</b></span
-          >
-          } @if (g.baja) { <span> · Baja: {{ g.baja }}</span> }
+          @if (j.edad) { <span>{{ j.edad }} años</span> }
         </div>
       </div>
-      @if (g.goles != null) {
-      <span class="badge">{{ g.goles }}</span>
-      }
-    </div>
+
+      <div class="stats">
+        <span class="stat">
+          <mat-icon class="icon sm">sports_handball</mat-icon>
+          <b>{{ j.goles ?? 0 }}</b> goles
+        </span>
+      </div>
+    </article>
     }
   </div>
   } @else {
   <div class="empty">Sin invitados.</div>
   }
 </section>
-
+}
 <div style="height: 16px"></div>
 <div class="empty">
   <button mat-stroked-button color="primary" (click)="verClasificacion()">
@@ -185,4 +201,3 @@
     <mat-icon>arrow_back</mat-icon> Volver a partidos
   </button>
 </div>
-}
