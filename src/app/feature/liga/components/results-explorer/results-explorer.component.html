@@ -145,7 +145,7 @@
       <div class="standings-list">
         @for (c of clasificaciones(); track c.code) {
         <article class="row" aria-label="equipo en clasificación">
-          <div class="pos" aria-hidden="true"> <span>{{ c.posicion }}</span> <span class="diff">({{ c.diferencia }})</span></div>
+          <div class="pos" aria-hidden="true"> <span class="order">{{ c.posicion }}</span> <span class="diff">({{ c.diferencia ? c.diferencia : '=' }})</span></div>
 
           <img
             class="logo"

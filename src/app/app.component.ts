@@ -19,6 +19,7 @@ import { SmallDeviceBreakPoints } from './feature/liga/service/break-point.servi
 import { TourMatMenuModule, TourService } from 'ngx-ui-tour-md-menu';
 import { onboard } from './app.onboarding';
 import { SidenavService } from './feature/liga/service/sidenav.service';
+import { SidenavEdgeSwipeDirective } from './common/directive/sidenav-edge-swipe.directive';
 
 @Component({
   selector: 'app-root',
@@ -26,6 +27,7 @@ import { SidenavService } from './feature/liga/service/sidenav.service';
     TourMatMenuModule,
     MatSidenavModule,
     RouterOutlet,
+    SidenavEdgeSwipeDirective,
     NavBarTreeComponent,
     MatToolbarModule,
     MatButtonModule,

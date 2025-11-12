@@ -87,13 +87,23 @@
   border-radius: 12px;
 }
 
-.pos {
+.no-usemos-con-pos {
   width: 44px; height: 44px;
   border-radius: 10px;
-  display: grid; place-items: center; grid-column: 1 1;
+  display: grid; place-items: center; grid: 1 1;
   font-weight: 800; white-space: nowrap;
   background: color-mix(in srgb, var(--mat-sys-primary) 14%, transparent);
   color: color-mix(in srgb, var(--mat-sys-primary) 80%, black);
+}
+
+.pos {
+    justify-self: center;        /* centra el bloque en la celda */
+  display: inline-grid;
+  grid-auto-flow: column;      /* coloca hijos en fila */
+  column-gap: 6px;             /* separación entre números */
+  align-items: baseline;       /* alinea dígitos y paréntesis por la línea base */
+  white-space: nowrap;         /* NO permitir salto de línea */
+  font-variant-numeric: tabular-nums; /* (opcional) dígitos monoespaciados */
 }
 
 .diff {
@@ -174,6 +184,19 @@
   .pos {
     width: 22px;
     height: 22px;
+    grid-auto-flow: initial;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 0;
+    grid-template-rows: 1fr 1fr;
+    white-space: normal;    /* permite salto al apilar */
+  }
+  .diff {
+    grid-column: 2; grid-row: 2;
+    justify-self: end; align-self: center;       /* abajo-derecha */
+  }
+  .order {
+     grid-column: 1; grid-row: 1;
+    justify-self: start; align-self: start;   /* arriba-izquierda */
   }
   .row {
     padding: 0px;
