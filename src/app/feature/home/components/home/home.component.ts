@@ -27,6 +27,7 @@ import { MatCardModule } from '@angular/material/card';
   styles: [ `
   .team-card { max-width: 400px; }
     `],
+    // [tourAnchor]="$index === 0 ? 'partidos-ganados' : ''"
   template: `
     @for (link of data; track link) {
     <mat-card class="team-card" appearance="outlined">

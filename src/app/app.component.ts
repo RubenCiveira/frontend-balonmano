@@ -20,6 +20,8 @@ import { TourMatMenuModule, TourService } from 'ngx-ui-tour-md-menu';
 import { onboard } from './app.onboarding';
 import { SidenavService } from './feature/liga/service/sidenav.service';
 import { SidenavEdgeSwipeDirective } from './common/directive/sidenav-edge-swipe.directive';
+import { MatomoService } from './common/analytics/matomo.service';
+import { PageTimeService } from './common/analytics/page-time.service';
 
 @Component({
   selector: 'app-root',
@@ -48,11 +50,14 @@ export class AppComponent implements OnInit, OnDestroy {
     private readonly appRef: ApplicationRef,
     private readonly sidenavService: SidenavService,
     private readonly tourService: TourService,
-    private readonly breakpoint: BreakpointObserver
+    private readonly breakpoint: BreakpointObserver,
+    private readonly matomo: MatomoService,
+    pageTime: PageTimeService
   ) {
     this.router.events
       .pipe(filter((e) => e instanceof NavigationEnd))
       .subscribe((e) => {
+        this.matomo.trackPageView(e.url);
         if( this.isHandset() && e.url.includes("&fase=") ) {
           this.sidenav()?.close();
         }
