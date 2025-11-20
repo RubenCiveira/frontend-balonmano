@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1763651213332,
+  "timestamp": 1763661005281,
   "index": "/frontend-balonmano/index.html",
   "assetGroups": [
     {
@@ -15,7 +15,7 @@
         "/frontend-balonmano/chunk-YSCD23TP.js",
         "/frontend-balonmano/favicon.ico",
         "/frontend-balonmano/index.html",
-        "/frontend-balonmano/main-ZVSH6QNU.js",
+        "/frontend-balonmano/main-5VT4FQ4H.js",
         "/frontend-balonmano/manifest.webmanifest",
         "/frontend-balonmano/polyfills-5CFQRCPP.js",
         "/frontend-balonmano/styles-SOZDS7XW.css"
@@ -55,8 +55,8 @@
     "/frontend-balonmano/icons/icon-512x512.png": "ea49ed7277321e81b48181dfb2ffda30ab9034db",
     "/frontend-balonmano/icons/icon-72x72.png": "52cac5fe3089e1fc1c6250457a59211ffb390123",
     "/frontend-balonmano/icons/icon-96x96.png": "d8816fe141278757d676ee3ede1e5dc26cb02b38",
-    "/frontend-balonmano/index.html": "79ccf9d452c880280bce465e1851997b8dc2fcbf",
-    "/frontend-balonmano/main-ZVSH6QNU.js": "a1b6b4bf44ac15e8d4af34cf4c3baeb55ae23844",
+    "/frontend-balonmano/index.html": "2098bd96ee6b82b643c706b73d6dbf15fe10f4e2",
+    "/frontend-balonmano/main-5VT4FQ4H.js": "eeb27fa518f2ca45eaf131c61349567cd551c13f",
     "/frontend-balonmano/manifest.webmanifest": "5f87e728ae68fab43be14053ee563e1e399b3047",
     "/frontend-balonmano/polyfills-5CFQRCPP.js": "f2241e9a25858f895ce299d15f6f22e849e2fd72",
     "/frontend-balonmano/styles-SOZDS7XW.css": "5d8c8a42e20528803103128524441651492afb04"
