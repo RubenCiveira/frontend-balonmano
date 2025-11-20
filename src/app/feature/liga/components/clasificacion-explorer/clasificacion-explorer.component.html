@@ -1,0 +1,186 @@
+<mat-card style="margin-top: 12px">
+  <mat-card-header>
+    <mat-card-title>
+      {{
+        store.competicion()?.label?.includes(store.categoria()?.label!)
+          ? ""
+          : store.categoria()?.label + "-"
+      }}
+      {{ store.competicion()?.label }}
+    </mat-card-title>
+    <mat-card-subtitle>
+      {{ store.fase()?.label }}
+      {{
+        store.temporada() ? "(" + store.temporada()?.label + ")" : ""
+      }}</mat-card-subtitle
+    >
+    <span class="spacer"></span>
+    <mat-form-field
+      class="selector-jornada"
+      appearance="fill"
+      tourAnchor="select-jornada"
+    >
+      <mat-label>Jornada</mat-label>
+      <mat-select
+        [disabled]="!store.fase() || store.jornadas().length === 0"
+        [value]="store.jornada()"
+        [compareWith]="compareByCode"
+        (selectionChange)="store.setJornada($event.value)"
+      >
+        @for (s of store.jornadas(); track s.code) {
+        <mat-option [value]="s"
+          >{{ s.label }}
+          {{
+            s.code === store.jornadaActual()?.code ? "(Actual)" : ""
+          }}</mat-option
+        >
+        }
+      </mat-select>
+    </mat-form-field>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="report">
+      @if (!store.fase() ) {
+      <mat-icon class="ill" fontSet="material-symbols-outlined"
+        >search_insights</mat-icon
+      >
+      <h3>Selecciona una fase</h3>
+      <p>
+        Elige territorial, temporada, categoría y competición para ver los
+        partidos o la clasificación.
+      </p>
+
+      <div class="actions">
+        <button mat-flat-button color="primary" (click)="openMenu()">
+          <mat-icon>menu</mat-icon>
+          Abrir menú
+        </button>
+        <button mat-stroked-button color="primary" routerLink="/">
+          Limpiar selección
+        </button>
+      </div>
+      } @else if (loading()) {
+      <div class="loading">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      </div>
+      <div class="skeleton-list" aria-hidden="true">
+        @for (_ of [1,2,3,4,5,6,7,8,9,10,11,12]; track _) {
+        <div class="skeleton-item">
+          <div class="sk-logo shimmer"></div>
+          <div class="sk-lines">
+            <div class="sk-line shimmer"></div>
+            <div class="sk-line short shimmer"></div>
+          </div>
+          <div class="sk-score shimmer"></div>
+        </div>
+        }
+      </div>
+      } @else if(clasificaciones().length === 0) {
+      <div class="empty">
+        <mat-icon>list_alt</mat-icon>
+        <p>No hay clasificación disponible.</p>
+      </div>
+      } @else {
+      <div class="standings-list">
+        @for (c of clasificaciones(); track c.code) {
+        <article class="row" aria-label="equipo en clasificación">
+          <div class="pos" aria-hidden="true">
+            <span class="order">{{ c.posicion }}</span>
+            <span class="diff">({{ c.diferencia ? c.diferencia : "=" }})</span>
+          </div>
+
+          <img
+            class="logo"
+            [src]="c.equipo.logo"
+            (click)="detalle(c.equipo)"
+            alt=""
+            loading="lazy"
+            decoding="async"
+          />
+
+          <div class="main">
+            <div class="line1">
+              <span class="team" (click)="detalle(c.equipo)">{{
+                c.equipo.label
+              }}</span>
+              <span class="points">
+                {{ c.puntos }} <span class="pts-suffix">pts</span>
+              </span>
+            </div>
+
+            <div class="line2 muted">
+              <span class="chips-title">
+                <b> Partidos </b>
+                {{ c.ganados + c.empatados + c.perdidos }}
+              </span>
+              <div class="chip-group">
+                <div class="chip">
+                  <mat-icon
+                    class="icon sm win"
+                    aria-label="Partidos ganados"
+                    [tourAnchor]="$index === 0 ? 'partidos-ganados' : ''"
+                    >emoji_events</mat-icon
+                  >
+                  {{ c.ganados }}
+                </div>
+                <div class="chip">
+                  <mat-icon
+                    class="icon sm draw"
+                    aria-label="Partidos empatados"
+                    [tourAnchor]="$index === 0 ? 'partidos-empatados' : ''"
+                    >balance</mat-icon
+                  >
+                  {{ c.empatados }}
+                </div>
+                <div class="chip">
+                  <mat-icon
+                    class="icon sm loss"
+                    fontSet="material-symbols-outlined"
+                    aria-label="Partidos perdidos"
+                    [tourAnchor]="$index == 0 ? 'partidos-perdidos' : ''"
+                    >sentiment_sad</mat-icon
+                  >
+                  {{ c.perdidos }}
+                </div>
+              </div>
+              <span class="chips-title">
+                <b>Goles</b>
+                <span
+                  [class.positive]="c.golesMarcados - c.golesRecividos >= 0"
+                  [class.negative]="c.golesMarcados - c.golesRecividos < 0"
+                >
+                  {{ c.golesMarcados - c.golesRecividos >= 0 ? "+" : "" }}
+                  {{ c.golesMarcados - c.golesRecividos }}
+                </span>
+              </span>
+              <div class="chip-group">
+                <div class="chip">
+                  <mat-icon
+                    class="icon sm win"
+                    fontSet="material-symbols-outlined"
+                    aria-label="Partidos perdidos"
+                    [tourAnchor]="$index === 0 ? 'goles-marcados' : ''"
+                    >sports_handball</mat-icon
+                  >
+                  + {{ c.golesMarcados }}
+                </div>
+                <div class="chip">
+                  <mat-icon
+                    class="icon sm loss"
+                    fontSet="material-symbols-outlined"
+                    aria-label="Partidos perdidos"
+                    [tourAnchor]="$index === 0 ? 'goles-recividos' : ''"
+                    >login</mat-icon
+                  >
+                  - {{ c.golesRecividos }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+        }
+      </div>
+      }
+    </div>
+  </mat-card-content>
+</mat-card>

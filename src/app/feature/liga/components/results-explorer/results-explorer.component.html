@@ -2,14 +2,12 @@
   <mat-card-header>
     <mat-card-title>
       {{
-        store.competicion()?.label?.includes( store.categoria()?.label! )
+        store.competicion()?.label?.includes(store.categoria()?.label!)
           ? ""
           : store.categoria()?.label + "-"
       }}
       {{ store.competicion()?.label }}
-      <!-- <small>{{  store.territorial()?.label  }}</small>  -->
     </mat-card-title>
-    <!-- {{ store.jornada() ? '(Jornada ' + store.jornada()?.label + ')' : '(Jornada '+(store.jornadaActual() ? store.jornadaActual()?.label : 'actual') + ')' }} -->
     <mat-card-subtitle>
       {{ store.fase()?.label }}
       {{
@@ -17,7 +15,11 @@
       }}</mat-card-subtitle
     >
     <span class="spacer"></span>
-    <mat-form-field class="selector-jornada" appearance="fill" tourAnchor="select-jornada">
+    <mat-form-field
+      class="selector-jornada"
+      appearance="fill"
+      tourAnchor="select-jornada"
+    >
       <mat-label>Jornada</mat-label>
       <mat-select
         [disabled]="!store.fase() || store.jornadas().length === 0"
@@ -73,12 +75,12 @@
         </div>
         }
       </div>
-      } @else if (store.viewMode() === 'partidos' && partidos().length === 0) {
+      } @else if ( partidos().length === 0) {
       <div class="empty">
         <mat-icon>event_busy</mat-icon>
         <p>No hay partidos para esta jornada.</p>
       </div>
-      } @else if (store.viewMode() === 'partidos') {
+      } @else {
       <div>
         @for(p of partidos(); track p.code) {
         <article class="match-card mat-elevation-z1">
@@ -98,13 +100,27 @@
 
           <div class="teams">
             <div class="team local">
-              <span class="name" (click)="detalle(p.local)">{{ p.local.label }}</span>
-              <img [src]="p.local.logo" (click)="detalle(p.local)" alt="" class="logo" />
+              <span class="name" (click)="detalle(p.local)">{{
+                p.local.label
+              }}</span>
+              <img
+                [src]="p.local.logo"
+                (click)="detalle(p.local)"
+                alt=""
+                class="logo"
+              />
             </div>
             <div class="versus">vs</div>
             <div class="team visitante">
-              <img [src]="p.visitante.logo" (click)="detalle(p.visitante)" alt="" class="logo" />
-              <span class="name" (click)="detalle(p.visitante)">{{ p.visitante.label }}</span>
+              <img
+                [src]="p.visitante.logo"
+                (click)="detalle(p.visitante)"
+                alt=""
+                class="logo"
+              />
+              <span class="name" (click)="detalle(p.visitante)">{{
+                p.visitante.label
+              }}</span>
             </div>
           </div>
 
@@ -131,106 +147,6 @@
               } @else {
               <span class="pill ghost">Pendiente</span>
               }
-            </div>
-          </div>
-        </article>
-        }
-      </div>
-      } @else if(clasificaciones().length === 0) {
-      <div class="empty">
-        <mat-icon>list_alt</mat-icon>
-        <p>No hay clasificación disponible.</p>
-      </div>
-      } @else {
-      <div class="standings-list">
-        @for (c of clasificaciones(); track c.code) {
-        <article class="row" aria-label="equipo en clasificación">
-          <div class="pos" aria-hidden="true"> <span class="order">{{ c.posicion }}</span> <span class="diff">({{ c.diferencia ? c.diferencia : '=' }})</span></div>
-
-          <img
-            class="logo"
-            [src]="c.equipo.logo"
-            (click)="detalle(c.equipo)"
-            alt=""
-            loading="lazy"
-            decoding="async"
-          />
-
-          <div class="main">
-            <div class="line1">
-              <span class="team" (click)="detalle(c.equipo)">{{ c.equipo.label }}</span>
-              <span class="points">
-                {{ c.puntos }} <span class="pts-suffix">pts</span>
-              </span>
-            </div>
-
-            <div class="line2 muted">
-              <span class="chips-title">
-                <b> Partidos </b>
-                {{ c.ganados + c.empatados + c.perdidos }}
-              </span>
-              <div class="chip-group">
-                <div class="chip">
-                  <mat-icon
-                    class="icon sm win"
-                    aria-label="Partidos ganados"
-                    [tourAnchor]="$index === 0 ? 'partidos-ganados' : ''"
-                    >emoji_events</mat-icon
-                  >
-                  {{ c.ganados }}
-                </div>
-                <div class="chip">
-                  <mat-icon
-                    class="icon sm draw"
-                    aria-label="Partidos empatados"
-                    [tourAnchor]="$index === 0 ? 'partidos-empatados' : ''"
-                    >balance</mat-icon
-                  >
-                  {{ c.empatados }}
-                </div>
-                <div class="chip">
-                  <mat-icon
-                    class="icon sm loss"
-                    fontSet="material-symbols-outlined"
-                    aria-label="Partidos perdidos"
-                    [tourAnchor]="$index == 0 ? 'partidos-perdidos' : ''"
-                    >sentiment_sad</mat-icon
-                  >
-                  {{ c.perdidos }}
-                </div>
-              </div>
-              <span class="chips-title">
-                <b>Goles</b>
-                <span
-                  [class.positive]="c.golesMarcados - c.golesRecividos >= 0"
-                  [class.negative]="c.golesMarcados - c.golesRecividos < 0"
-                >
-                  {{ c.golesMarcados - c.golesRecividos >= 0 ? "+" : "" }}
-                  {{ c.golesMarcados - c.golesRecividos }}
-                </span>
-              </span>
-              <div class="chip-group">
-                <div class="chip">
-                  <mat-icon
-                    class="icon sm win"
-                    fontSet="material-symbols-outlined"
-                    aria-label="Partidos perdidos"
-                    [tourAnchor]="$index === 0 ? 'goles-marcados' : ''"
-                    >sports_handball</mat-icon
-                  >
-                  + {{ c.golesMarcados }}
-                </div>
-                <div class="chip">
-                  <mat-icon
-                    class="icon sm loss"
-                    fontSet="material-symbols-outlined"
-                    aria-label="Partidos perdidos"
-                    [tourAnchor]="$index === 0 ? 'goles-recividos' : ''"
-                    >login</mat-icon
-                  >
-                  - {{ c.golesRecividos }}
-                </div>
-              </div>
             </div>
           </div>
         </article>

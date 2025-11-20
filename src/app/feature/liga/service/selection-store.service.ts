@@ -59,6 +59,10 @@ export class SelectionStore {
       ),
       { initialValue: this.collectParamsFromSnapshot() }
     );
+    effect(() => {
+      // Cada vez que cambie la ruta → sincroniza menús
+      this.syncFromRoute();
+    });
     this.routePath = toSignal(
       this.router.events.pipe(
         filter((e) => e instanceof NavigationEnd),
@@ -67,10 +71,6 @@ export class SelectionStore {
       ),
       { initialValue: this.getPrimaryPath(this.route.root.snapshot) }
     );
-    effect(() => {
-      // Cada vez que cambie la ruta → sincroniza menús
-      this.syncFromRoute();
-    });
     effect(() => {
       const seg = this.routePath();
       setTimeout(() => {

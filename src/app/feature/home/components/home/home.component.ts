@@ -11,37 +11,97 @@ import {
   Territorial,
 } from '../../../liga/service/liga-api.service';
 import { MatButtonModule } from '@angular/material/button';
+import { MatListModule } from '@angular/material/list';
 import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
-    imports: [MatButtonModule, TourMatMenuModule],
-    template: `
-    <p></p>
-    <p>Carballiño</p>
-    <ul>
-      <li>
-        Benjamines:
-        <button
-          mat-raised-button
-          (click)="
-            goTo('partidos', '20', '2526', '2605', '209564', '1033718')
-          "  [tourAnchor]="'go-to-clasificacion'"
-        >
-          Partidos
-        </button>
-        <button
-          mat-raised-button
-          (click)="
-            goTo('clasificacion', '20', '2526', '2605', '209564', '1033718')
-          "  [tourAnchor]="'go-to-partidos'"
-        >
-          Clasificación
-        </button>
-      </li>
-    </ul>
-  `
+  imports: [
+    MatButtonModule,
+    TourMatMenuModule,
+    MatListModule,
+    MatIconModule,
+    MatCardModule,
+  ],
+  styles: [ `
+  .team-card { max-width: 400px; }
+    `],
+  template: `
+    @for (link of data; track link) {
+    <mat-card class="team-card" appearance="outlined">
+      <mat-card-header>
+        <mat-card-title>{{ link.group }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list>
+          @for (item of link.equipos; track item) {
+          <mat-list-item>
+            <div matListItemTitle>{{ item.name }}</div>
+            <button
+              matIconButton
+              matListItemMeta
+              (click)="
+                goTo(
+                  'partidos',
+                  link.territorial,
+                  temporada,
+                  item.categoria,
+                  item.competicion,
+                  item.fase
+                )
+              "
+            >
+              <mat-icon>sports_handball</mat-icon>
+            </button>
+            <button
+              matIconButton
+              matListItemMeta
+              (click)="
+                goTo(
+                  'clasificacion',
+                  link.territorial,
+                  temporada,
+                  item.categoria,
+                  item.competicion,
+                  item.fase
+                )
+              "
+            >
+              <mat-icon>format_list_numbered</mat-icon>
+              Clasificación
+            </button>
+          </mat-list-item>
+          }
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+    }
+  `,
 })
 export class HomeComponent {
+  temporada = '2526';
+
+  data = [
+    {
+      group: 'Carballiño',
+      territorial: '20',
+      equipos: [
+        {
+          name: 'Benjamines',
+          categoria: '2605',
+          competicion: '209564',
+          fase: '1033718',
+        },
+        {
+          name: 'Alevines 5',
+          categoria: '2604',
+          competicion: '209563',
+          fase: '1033727',
+        },
+      ],
+    },
+  ];
   public constructor(private readonly store: SelectionStore) {}
 
   goTo(
@@ -54,7 +114,7 @@ export class HomeComponent {
   ) {
     this.store.setViewMode(mode);
     setTimeout(() => {
-        this.goToFase(territorial, temporada, categoria, competicion, fase);
+      this.goToFase(territorial, temporada, categoria, competicion, fase);
     });
   }
   goToFase(

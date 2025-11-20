@@ -8,6 +8,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import {
@@ -23,11 +24,10 @@ import { Router, RouterModule } from '@angular/router';
 import { MatOptionModule } from '@angular/material/core';
 import { SidenavService } from '../../service/sidenav.service';
 import { Subscription } from 'rxjs';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { TeamComponent } from '../team/team.component';
 
 @Component({
-  selector: 'app-results-explorer',
+  selector: 'app-clasificacion-explorer',
   imports: [
     CommonModule,
     FormsModule,
@@ -36,7 +36,6 @@ import { TeamComponent } from '../team/team.component';
     MatFormFieldModule,
     MatInputModule,
     RouterModule,
-    MatDialogModule,
     TourMatMenuModule,
     MatFormFieldModule,
     ReactiveFormsModule,
@@ -49,12 +48,12 @@ import { TeamComponent } from '../team/team.component';
     MatIconModule,
     MatProgressBarModule,
   ],
-  styleUrls: ['./results-explorer.component.scss'],
-  templateUrl: './results-explorer.component.html',
+  styleUrls: ['./clasificacion-explorer.component.scss'],
+  templateUrl: './clasificacion-explorer.component.html',
 })
-export class ResultsExplorerComponent implements OnDestroy {
-  partidos = signal<Partido[]>([]);
+export class ClasificacionExplorerComponent implements OnDestroy {
   loading = signal<boolean>(true);
+  clasificaciones = signal<Clasificacion[]>([]);
 
   private subscription = new Subscription();
 
@@ -72,17 +71,18 @@ export class ResultsExplorerComponent implements OnDestroy {
       if (fase) {
         setTimeout(() => {
           this.loading.set(true);
+
           if (jornada) {
             this.subscription.add(
-              this.api.partidos(jornada).subscribe((p) => {
-                this.partidos.set(p);
+              this.api.clasificacion(jornada).subscribe((p) => {
+                this.clasificaciones.set(p);
                 this.loading.set(false);
               })
             );
           } else {
             this.subscription.add(
-              this.api.ultimosPartidos(fase).subscribe((p) => {
-                this.partidos.set(p);
+              this.api.ultimaClasificacion(fase).subscribe((p) => {
+                this.clasificaciones.set(p);
                 this.loading.set(false);
               })
             );
@@ -90,7 +90,7 @@ export class ResultsExplorerComponent implements OnDestroy {
         });
       } else {
         setTimeout(() => {
-          this.partidos.set([]);
+          this.clasificaciones.set([]);
         });
       }
     });
